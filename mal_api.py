@@ -2,6 +2,16 @@
 import requests
 import json
 from datetime import datetime, timedelta
+import time
+import re
+from scraper_utils import debug_print
+
+def _create_anime_slug(title):
+    """Cria um slug URL-friendly a partir do título do anime."""
+    # Substitui espaços por underscores e remove caracteres especiais
+    slug = re.sub(r'[^a-zA-Z0-9_ ]', '', title)
+    slug = slug.replace(' ', '_')
+    return slug
 
 def get_config():
     """Carrega a configuração do arquivo JSON."""
@@ -97,49 +107,81 @@ def get_best_anime_picture(anime_id):
         return data['main_picture'].get('large')
     return None
 
-def get_anticipated_animes(limit=50):
+def get_anticipated_animes():
     """
-    Busca os animes mais esperados (ranking 'upcoming') da API do MAL.
+    Busca os animes mais esperados de uma temporada específica (definida em config.json) da API do MAL.
     """
-    print("Buscando ranking de animes mais esperados via API...")
-    url = "https://api.myanimelist.net/v2/anime/ranking"
+    config = get_config()
+    anticipated_config = config['anticipated_animes']
+    season_str = anticipated_config['season'] # Ex: "Fall 2025"
+    limit = anticipated_config['max_animes']
+    min_members = anticipated_config['min_members']
+
+    # Extrai ano e estação da string (Ex: "Fall 2025" -> 2025, "fall")
+    try:
+        parts = season_str.split(' ')
+        season_name = parts[0].lower()
+        year = int(parts[1])
+    except (IndexError, ValueError):
+        print(f"Erro: Formato de temporada inválido em config.json: {season_str}. Esperado 'Estação Ano'.")
+        return []
+
+    debug_print(f"DEBUG: Buscando animes para Ano: {year}, Estação: {season_name}", 1)
+    print(f"Buscando animes mais esperados da temporada {season_name.capitalize()} {year} via API...")
+    url = f"https://api.myanimelist.net/v2/anime/season/{year}/{season_name}"
     params = {
-        'ranking_type': 'upcoming',
-        'limit': limit,
-        'fields': 'id,title,main_picture,num_list_users,alternative_titles'
+        'limit': 500, # Buscar um limite maior para filtrar e ordenar localmente
+        'fields': 'id,title,main_picture,num_list_users,alternative_titles',
+        'sort': 'anime_num_list_users' # Ordenar por número de usuários para simular 'mais esperados'
     }
     
-    data = make_api_request(url, params)
-    
-    if not data or 'data' not in data:
-        print("Não foi possível obter os dados dos animes mais esperados.")
-        return []
+    all_animes_from_season = []
+    while url:
+        data = make_api_request(url, params)
+        if not data or 'data' not in data:
+            break
         
-    # Formata os dados para o formato esperado pelo frontend
+        all_animes_from_season.extend(data['data'])
+        
+        # Pega a URL da próxima página, se existir
+        url = data.get('paging', {}).get('next')
+        params = {} # A URL da próxima página já contém os parâmetros
+
+    # Formata e filtra os dados
     formatted_animes = []
-    for item in data['data']:
-        node = item['node']
+    for anime in all_animes_from_season:
+        node = anime['node']
+        members_count = node.get('num_list_users', 0)
         
-        # Busca imagem de alta resolução (mais lento)
-        best_image = get_best_anime_picture(node['id'])
-        time.sleep(0.5) # Pausa para não sobrecarregar a API
+        if members_count >= min_members:
+            # Busca imagem de alta resolução (mais lento)
+            best_image = get_best_anime_picture(node['id'])
+            time.sleep(0.1) # Pausa para não sobrecarregar a API
 
-        # Prioriza o título em inglês
-        english_title = node.get('alternative_titles', {}).get('en', '')
-        title = english_title if english_title else node['title']
+            # Prioriza o título em inglês
+            english_title = node.get('alternative_titles', {}).get('en', '')
+            title = english_title if english_title else node['title']
+            
+            anime_slug = _create_anime_slug(title)
 
-        formatted_animes.append({
-            'ranking': item['ranking']['rank'],
-            'title': title,
-            'url': f"https://myanimelist.net/anime/{node['id']}",
-            'image': best_image or (node['main_picture'].get('large', node['main_picture'].get('medium')) if 'main_picture' in node else None),
-            'members_count': node.get('num_list_users', 0),
-            'members_display': f"{node.get('num_list_users', 0):,}"
-        })
-        
-    print(f"Encontrados {len(formatted_animes)} animes no ranking de mais esperados.")
+            formatted_animes.append({
+                'ranking': 0, # O ranking será atribuído após a ordenação final
+                'title': title,
+                'url': f"https://myanimelist.net/anime/{node['id']}/{anime_slug}",
+                'image': best_image or (node['main_picture'].get('large', node['main_picture'].get('medium')) if 'main_picture' in node else None),
+                'members_count': members_count,
+                'members_display': f"{members_count:,}"
+            })
+            
+    # Ordena os animes filtrados por número de membros (decrescente) e aplica o limite
+    formatted_animes = sorted(formatted_animes, key=lambda x: x['members_count'], reverse=True)[:limit]
+    
+    # Atribui o ranking final
+    for i, anime in enumerate(formatted_animes):
+        anime['ranking'] = i + 1
+
+    print(f"Encontrados {len(formatted_animes)} animes mais esperados para a temporada {season_name.capitalize()} {year}.")
     return formatted_animes
-
 def get_seasonal_animes(year, season, limit=100, min_members=20000):
     """
     Busca animes de uma temporada específica, lidando com paginação.
@@ -172,15 +214,17 @@ def get_seasonal_animes(year, season, limit=100, min_members=20000):
         if members_count >= min_members:
             # Busca imagem de alta resolução (mais lento)
             best_image = get_best_anime_picture(node['id'])
-            time.sleep(0.5) # Pausa para não sobrecarregar a API
+            time.sleep(0.1) # Pausa para não sobrecarregar a API
 
             # Prioriza o título em inglês
             english_title = node.get('alternative_titles', {}).get('en', '')
             title = english_title if english_title else node['title']
+            
+            anime_slug = _create_anime_slug(title)
 
             formatted_animes.append({
                 'title': title,
-                'url': f"https://myanimelist.net/anime/{node['id']}",
+                'url': f"https://myanimelist.net/anime/{node['id']}/{anime_slug}",
                 'image': best_image or (node['main_picture'].get('large', node['main_picture'].get('medium')) if 'main_picture' in node else None),
                 'members': members_count
             })
