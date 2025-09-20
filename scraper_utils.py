@@ -12,19 +12,6 @@ def log_error(e):
         f.write(f"{datetime.now()} - {str(e)}\n")
         f.write(traceback.format_exc() + "\n\n")
 
-def parse_members_count(text):
-    """Converte texto de contagem de membros para número inteiro"""
-    try:
-        text = text.strip().upper().replace(',', '')
-        if 'K' in text:
-            return int(float(text.replace('K','')) * 1000)
-        elif 'M' in text:
-            return int(float(text.replace('M','')) * 1000000)
-        else:
-            return int(text)
-    except:
-        return 0
-
 def parse_air_date(date_str):
     """Converte string de data para objeto date"""
     try:
@@ -45,11 +32,3 @@ def parse_air_date(date_str):
         log_error(e)
         return None
 
-def get_ranking_colors():
-    """Retorna esquema de cores para diferentes posições no ranking"""
-    return {
-        1: {"bg": "#88FE70", "text": "#212121"},  # Green
-        2: {"bg": "#FE70A9", "text": "#212121"},  # Pink  
-        3: {"bg": "#FE70A9", "text": "#212121"},  # Pink
-        "other": {"bg": "#FECB70", "text": "#212121"}  # Yellow
-    }

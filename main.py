@@ -3,134 +3,59 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import time
 import json
-from scraper_utils import debug_print, log_error, parse_members_count, parse_air_date
-from html_generator import generate_html_page
+import os
 
-def get_season_anime_urls(min_members=20000):
-    # URLs para buscar animes
-    urls = [
-        "https://myanimelist.net/anime/season",
-        "https://myanimelist.net/anime/season/2025/summer"
-    ]
-    
-    headers = {
-        'User-Agent': 'Mozilla/5.0'
-    }
-    
-    debug_print("Iniciando coleta de URLs de animes...")
-    
-    anime_list = []
-    anime_urls_seen = set()  # Para evitar duplicatas
-    
-    for url in urls:
-        debug_print(f"Buscando em: {url}", 2)
-        
-        try:
-            response = requests.get(url, headers=headers)
-            response.raise_for_status()
-        except requests.RequestException as e:
-            debug_print(f"Erro ao acessar {url}: {e}", 2)
-            log_error(e)
-            continue
-        
-        soup = BeautifulSoup(response.content, 'html.parser')
-        seasonal_items = soup.find_all('div', class_='seasonal-anime')
-        
-        debug_print(f"Animes encontrados em {url}: {len(seasonal_items)}", 2)
-        
-        for item in seasonal_items:
-            try:
-                link_tag = item.find('a', class_='link-title')
-                if not link_tag or not link_tag.has_attr('href'):
-                    continue
-                    
-                anime_url = link_tag['href']
-                
-                # Evitar duplicatas
-                if anime_url in anime_urls_seen:
-                    continue
-                anime_urls_seen.add(anime_url)
-                
-                anime_title = link_tag.text.strip()
-                
-                img_tag = item.find('img')
-                anime_img = None
-                if img_tag:
-                    anime_img = img_tag.get('data-src') or img_tag.get('src')
-                
-                member_tag = item.find('div', class_='scormem-item member')
-                members_count = parse_members_count(member_tag.text) if member_tag else 0
-                
-                if members_count >= min_members:
-                    anime_list.append({
-                        'title': anime_title,
-                        'url': anime_url,
-                        'image': anime_img,
-                        'members': members_count
-                    })
-            except Exception as e_inner:
-                debug_print(f"Erro ao processar anime: {e_inner}", 3)
-                log_error(e_inner)
-        
-        # Pequeno delay entre requests
-        time.sleep(1)
-    
-    debug_print(f"Total de animes únicos encontrados: {len(anime_urls_seen)}")
-    debug_print(f"Total de animes filtrados com {min_members}+ membros: {len(anime_list)}")
-    return anime_list
+# Funções de utilidade
+from scraper_utils import debug_print, log_error, parse_air_date
+
+# Funções do scraper de animes esperados
+from mal_api import get_anticipated_animes, get_seasonal_animes
+
+# --- BLOCO DE FUNÇÕES DE COLETA DE DADOS (SEMANAL) ---
+
+def get_current_season():
+    """Determina o ano e a estação atual."""
+    d = datetime.now()
+    if 1 <= d.month <= 3:
+        return d.year, "winter"
+    if 4 <= d.month <= 6:
+        return d.year, "spring"
+    if 7 <= d.month <= 9:
+        return d.year, "summer"
+    return d.year, "fall"
 
 def get_episodes_info(anime_url):
     try:
-        debug_print(f"Processando episódios para: {anime_url}")
-        episodes_url = anime_url.replace('/episodes', '/episode')
-        if not episodes_url.endswith('/episode'):
-            episodes_url = f"{anime_url}/episode"
+        episodes_url = anime_url.rstrip('/') + '/episode'
         headers = {'User-Agent': 'Mozilla/5.0'}
         response = requests.get(episodes_url, headers=headers)
+        if response.status_code == 404:
+            debug_print(f"Página de episódios não encontrada (404): {episodes_url}", 2)
+            return None
         response.raise_for_status()
         soup = BeautifulSoup(response.content, 'html.parser')
-        anime_title_elem = soup.find('h1', class_='title-name')
-        anime_title = anime_title_elem.text.strip().replace(' Episodes', '') if anime_title_elem else "Unknown"
-        episode_table = soup.find('table', class_='episode_list') or next((t for t in soup.find_all('table') if 'episode' in str(t).lower()), None)
-        if not episode_table:
-            return None
+        anime_title = soup.find('h1', class_='title-name').text.strip().replace(' Episodes', '')
+        episode_table = soup.find('table', class_='episode_list')
+        if not episode_table: return None
         rows = episode_table.find_all('tr', class_='episode-list-data')
         today = datetime.now().date()
         start_of_week = today - timedelta(days=today.weekday() + 7)
         end_of_week = start_of_week + timedelta(days=6)
         episodes = []
         for row in rows:
-            try:
-                airdate_td = row.find('td', class_='episode-aired')
-                if not airdate_td:
-                    continue
-                airdate = parse_air_date(airdate_td.text.strip())
-                if not airdate or not (start_of_week <= airdate <= end_of_week):
-                    continue
-                ep_num_td = row.find('td', class_='episode-number')
-                ep_num = ep_num_td.text.strip() if ep_num_td else "Unknown"
-                title_td = row.find('td', class_='episode-title')
-                ep_title = title_td.find('a').text.strip() if title_td and title_td.find('a') else (title_td.text.strip() if title_td else "Unknown")
-                score_td = row.find('td', class_='episode-poll')
-                score = 0.0
-                if score_td and 'scored' in score_td.get('class', []):
-                    try:
-                        score = float(score_td.get('data-raw', '0'))
-                    except ValueError:
-                        score = 0.0
-                episodes.append({
-                    'anime_title': anime_title,
-                    'episode_number': ep_num,
-                    'episode_title': ep_title,
-                    'score': score,
-                    'airdate': airdate
-                })
-            except Exception as e_inner:
-                debug_print(f"Erro ao processar episódio: {e_inner}", 3)
-                log_error(e_inner)
+            airdate = parse_air_date(row.find('td', class_='episode-aired').text.strip())
+            if not airdate or not (start_of_week <= airdate <= end_of_week): continue
+            score_td = row.find('td', class_='episode-poll')
+            score = float(score_td.get('data-raw', '0')) if score_td and 'scored' in score_td.get('class', []) else 0.0
+            episodes.append({
+                'anime_title': anime_title,
+                'episode_number': row.find('td', class_='episode-number').text.strip(),
+                'episode_title': row.find('td', class_='episode-title').a.text.strip(),
+                'score': score,
+                'airdate': airdate
+            })
         return episodes
     except Exception as e:
-        debug_print(f"Erro ao coletar episódios de {anime_url}: {e}", 2)
         log_error(e)
         return None
 
@@ -140,64 +65,104 @@ def save_data_to_json(episodes, filename='episodes_data.json'):
         'generated_at': datetime.now().isoformat(),
         'episodes': episodes
     }
-    with open(filename, 'w', encoding='utf-8') as f:
+    with open(f"frontend/public/{filename}", 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2, default=str)
 
-def load_data_from_json(filename='episodes_data.json'):
-    """Carrega dados dos episódios do JSON"""
-    try:
-        with open(filename, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return None
+# --- BLOCO DO RANKING SEMANAL ---
 
-def main():
+def run_weekly_ranking():
+    """Executa a geração do ranking de episódios da semana (abordagem híbrida)."""
+    print("\n" + "="*60)
+    print("GERANDO RANKING: TOP 50 EPISÓDIOS DA SEMANA (HÍBRIDO API+SCRAPER)")
+    print("="*60)
     try:
-        print("Iniciando coleta de dados do MyAnimeList...")
-        print("=" * 50)
+        year, season = get_current_season()
+        # 1. Usar a API para buscar a lista de animes da temporada
+        anime_list = get_seasonal_animes(year, season)
         
-        anime_list = get_season_anime_urls()
-        print(f"\nTotal de animes filtrados: {len(anime_list)}")
         if not anime_list:
-            print("\nNenhum anime encontrado. O script não pode continuar.")
+            debug_print("Nenhum anime encontrado via API para o ranking semanal.", 1)
             return
-        
+            
         today = datetime.now().date()
         start_of_last_week = today - timedelta(days=today.weekday() + 7)
         end_of_last_week = start_of_last_week + timedelta(days=6)
-        print(f"\nBuscando episódios entre {start_of_last_week} e {end_of_last_week}")
-        print("=" * 50)
-        
+        debug_print(f"Período de referência: {start_of_last_week.strftime('%d/%m')} a {end_of_last_week.strftime('%d/%m')}", 1)
         all_episodes = []
+        
+        # 2. Usar o scraper para buscar os scores de cada anime
         for i, anime in enumerate(anime_list):
-            print(f"\nProcessando anime {i+1}/{len(anime_list)}: {anime['title']}")
-            episodes = get_episodes_info(anime['url'])
+            title_for_print = anime['title'].encode('cp1252', 'replace').decode('cp1252')
+            debug_print(f"Processando anime {i+1}/{len(anime_list)}: {title_for_print}", 1)
+            
+            # Chamada ao scraper mantida para buscar scores
+            episodes = get_episodes_info(anime['url']) 
+            
             if episodes:
                 for ep in episodes:
                     ep['image'] = anime['image']
                     ep['url'] = anime['url']
                 all_episodes.extend(episodes)
-            else:
-                print(f"  Nenhum episódio encontrado na última semana")
-            time.sleep(1)
+                debug_print(f"Encontrados {len(episodes)} episódios para '{title_for_print}' na semana.", 2)
+            time.sleep(1) # Manter a pausa para não sobrecarregar o servidor com o scraping
         
-        # Salvar dados brutos
-        save_data_to_json(all_episodes)
-        
-        episodes_with_score = [ep for ep in all_episodes if ep['score'] > 0]
-        episodes_with_score.sort(key=lambda x: x['score'], reverse=True)
+        if not all_episodes:
+            print("Nenhum episódio encontrado na semana de referência.")
+            return
+
+        episodes_with_score = sorted([ep for ep in all_episodes if ep['score'] > 0], key=lambda x: x['score'], reverse=True)
         top_50_episodes = episodes_with_score[:50]
         
-        # Gerar HTML
-        html_content = generate_html_page(top_50_episodes, start_of_last_week, end_of_last_week)
-        with open('top_anime_episodes.html', 'w', encoding='utf-8') as f:
-            f.write(html_content)
-        
-        print(f"\nArquivo 'top_anime_episodes.html' gerado com sucesso!")
-        print(f"Total de episódios ranqueados: {len(top_50_episodes)}")
+        save_data_to_json(top_50_episodes, filename='episodes_data.json')
+        print("Ranking de episódios da semana gerado com sucesso!")
     except Exception as e:
-        print(f"Ocorreu um erro inesperado: {e}")
+        print(f"Erro ao gerar ranking semanal: {e}")
         log_error(e)
+
+def save_anticipated_animes_data(animes_data, output_path="./"):
+    """Salva os dados dos animes esperados em JSON"""
+    output_data = {
+        'generated_date': datetime.now().isoformat(),
+        'season': 'Fall 2025',
+        'total_animes': len(animes_data),
+        'animes': animes_data
+    }
+    
+    # Garante que o diretório de saída exista
+    os.makedirs(output_path, exist_ok=True)
+
+    with open(os.path.join(output_path, 'anticipated_animes_data.json'), 'w', encoding='utf-8') as f:
+        json.dump(output_data, f, ensure_ascii=False, indent=2)
+    
+    debug_print(f"Dados salvos: {len(animes_data)} animes mais esperados em '{output_path}'", 1)
+    return output_data
+
+# --- BLOCO DO RANKING DE MAIS ESPERADOS ---
+
+def run_anticipated_ranking():
+    """Executa a geração do ranking de animes mais esperados via API."""
+    print("\n" + "="*60)
+    print("GERANDO RANKING: TOP 50 ANIMES MAIS ESPERADOS (VIA API)")
+    print("="*60)
+    try:
+        animes_data = get_anticipated_animes()
+        if not animes_data:
+            print("Nenhum dado de animes esperados foi coletado pela API.")
+            return
+        save_anticipated_animes_data(animes_data, output_path="frontend/public/")
+        print("Ranking de animes mais esperados gerado com sucesso!")
+    except Exception as e:
+        print(f"Erro ao gerar ranking de animes esperados: {e}")
+        log_error(e)
+
+# --- EXECUÇÃO PRINCIPAL ---
+
+def main():
+    """Função principal que executa ambos os rankings."""
+    print("INICIANDO SISTEMA DE RANKINGS")
+    run_weekly_ranking()
+    run_anticipated_ranking()
+    print("\nProcesso concluído! Ambas as páginas foram geradas.")
 
 if __name__ == "__main__":
     main()

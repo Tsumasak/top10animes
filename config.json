@@ -1,18 +1,38 @@
 {
-  "scraper_settings": {
-    "min_members": 20000,
-    "delay_between_requests": 1,
-    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-    "urls_to_scrape": [
-      "https://myanimelist.net/anime/season",
+  "general": {
+    "site_name": "Top Animes",
+    "instagram_url": "https://instagram.com/seu_instagram",
+    "mal_base_url": "https://myanimelist.net"
+  },
+  "mal_api": {
+    "client_id": "46023dfe02de7a0649abb349f84b4911",
+    "client_secret": "b0127e84021fd1de3e72fb31e9ff6d4f4b91e5704ddec1aab3e193d35014f312",
+    "redirect_uri": "http://localhost:3000",
+    "access_token": null,
+    "refresh_token": null,
+    "token_expiry": null
+  },
+  "weekly_episodes": {
+    "enabled": true,
+    "output_file": "top_anime_episodes.html",
+    "data_file": "episodes_data.json",
+    "title": "Top 50 Anime Episodes",
+    "max_episodes": 50,
+    "min_members": 10000,
+    "urls": [
+      "https://myanimelist.net/anime/season/2025/fall",
       "https://myanimelist.net/anime/season/2025/summer"
     ]
   },
-  "html_settings": {
-    "page_title": "Top 50 Anime Episodes da Semana",
-    "page_description": "Top 50 Anime Episodes da Semana",
-    "instagram_url": "https://www.instagram.com/top10_animes",
-    "instagram_handle": "@top10_animes"
+  "anticipated_animes": {
+    "enabled": true,
+    "output_file": "top_anticipated_animes.html",
+    "data_file": "anticipated_animes_data.json",
+    "title": "Top 50 Most Anticipated Animes",
+    "season": "Fall 2025",
+    "max_animes": 50,
+    "min_members": 1000,
+    "season_url": "https://myanimelist.net/anime/season"
   },
   "colors": {
     "rank_1": {
@@ -20,26 +40,42 @@
       "text": "#212121"
     },
     "rank_2_3": {
-      "bg": "#FE70A9", 
+      "bg": "#FE70A9",
       "text": "#212121"
     },
     "rank_other": {
       "bg": "#FECB70",
       "text": "#212121"
-    },
-    "background": "#353535",
-    "card_background": "#222",
-    "header_bg": "#FECB70",
-    "logo_bg": "#212121"
+    }
   },
   "assets": {
     "logo_path": "assets/logo_transparent.png",
     "mal_logo_path": "assets/MAL_logo.png",
-    "instagram_icon": "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/instagram-white-icon.png"
+    "placeholder_image": "assets/placeholder.png"
   },
-  "output_files": {
-    "html_file": "top_anime_episodes.html",
-    "json_data": "episodes_data.json",
+  "files": {
+    "css_file": "styles.css",
+    "js_file": "script.js",
     "error_log": "error_log.txt"
+  },
+  "scraping": {
+    "request_delay": 1,
+    "max_retries": 3,
+    "timeout": 30,
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+  },
+  "navigation": {
+    "menu_items": [
+      {
+        "name": "Weekly Episodes",
+        "url": "top_anime_episodes.html",
+        "description": "Top episodes da semana"
+      },
+      {
+        "name": "Most Anticipated",
+        "url": "top_anticipated_animes.html",
+        "description": "Animes mais esperados"
+      }
+    ]
   }
 }

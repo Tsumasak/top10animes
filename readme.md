@@ -1,147 +1,116 @@
-# Top 50 Anime Episodes Scraper
+# 🎌 Top Animes - Sistema de Rankings
 
-Um scraper Python que coleta dados do MyAnimeList para gerar uma página HTML com os top 50 episódios de anime da semana.
+Um sistema completo para gerar rankings de anime baseados em dados do MyAnimeList, com duas modalidades:
+- **Top Anime Episodes**: Os melhores episódios da semana
+- **Most Anticipated Animes**: Os animes mais esperados da temporada atual
 
-## Estrutura do Projeto
+## 📋 Funcionalidades
 
-```
-projeto/
-├── main.py              # Script principal
-├── scraper_utils.py     # Funções auxiliares
-├── html_generator.py    # Gerador de HTML
-├── styles.css          # Estilos CSS
-├── script.js           # JavaScript
-├── config.json         # Configurações
-├── requirements.txt    # Dependências Python
-├── assets/             # Imagens e recursos
-│   ├── logo_transparent.png
-│   └── MAL_logo.png
-├── episodes_data.json  # Dados dos episódios (gerado)
-├── top_anime_episodes.html # Página final (gerada)
-└── error_log.txt       # Log de erros (gerado)
-```
+### Rankings Disponíveis
+1. **Top 50 Anime Episodes da Semana**
+   - Baseado nas notas dos episódios lançados na última semana
+   - Atualização semanal
+   - Filtragem por número mínimo de membros
 
-## Instalação
+2. **Top 50 Most Anticipated Animes**
+   - Baseado no número de "Plan to Watch" members
+   - Focado na temporada atual (Fall 2025)
+   - Ordenação por popularidade/interesse
 
-1. Clone ou baixe os arquivos do projeto
-2. Instale as dependências:
+### Características do Sistema
+- ✅ **Menu de Navegação**: Navegue facilmente entre os rankings
+- ✅ **Design Responsivo**: Funciona perfeitamente em desktop, tablet e mobile
+- ✅ **Animações Suaves**: Interface moderna com transições fluidas
+- ✅ **Sistema Anti-Duplicatas**: Evita dados repetidos
+- ✅ **Tratamento de Erros**: Log detalhado de erros
+- ✅ **Configuração Flexível**: Personalize cores, URLs e parâmetros
+
+## 🚀 Instalação e Configuração
+
+### Pré-requisitos
 ```bash
+python 3.7+
 pip install -r requirements.txt
 ```
 
-3. Adicione os logos na pasta `assets/`:
-   - `logo_transparent.png` - Logo do Top 10 Animes (100x100px)
-   - `MAL_logo.png` - Logo do MyAnimeList
-
-## Uso
-
-Execute o script principal:
+### Dependências
 ```bash
-python main.py
+pip install requests beautifulsoup4 lxml
 ```
 
-O script irá:
-1. Coletar animes das temporadas do MyAnimeList
-2. Buscar episódios lançados na última semana
-3. Gerar arquivo JSON com os dados (`episodes_data.json`)
-4. Criar página HTML final (`top_anime_episodes.html`)
-
-## Configuração
-
-Edite o arquivo `config.json` para personalizar:
-- URLs de origem dos dados
-- Número mínimo de membros para filtrar animes
-- Cores do layout
-- Caminhos dos arquivos
-- Links das redes sociais
-
-## Arquivos Gerados
-
-- `episodes_data.json` - Dados brutos dos episódios em JSON
-- `top_anime_episodes.html` - Página web final
-- `error_log.txt` - Log de erros durante a execução
-
-## Funcionalidades
-
-### Script Principal (main.py)
-- Coleta dados de múltiplas URLs do MyAnimeList
-- Sistema anti-duplicatas
-- Salva dados em JSON para reuso
-- Gera HTML final
-
-### Funções Auxiliares (scraper_utils.py)
-- Parse de contagem de membros (K, M)
-- Parse de datas
-- Sistema de logging de erros
-- Configurações de cores
-
-### Gerador HTML (html_generator.py)
-- Gera página HTML completa
-- Suporte a templates
-- Integração com CSS e JavaScript externos
-
-### Frontend
-- **CSS**: Design responsivo com cores vibrantes
-- **JavaScript**: Scroll suave, botões fixos, carregamento dinâmico
-- **Responsividade**: Desktop (850px max), Tablet, Mobile
-
-## Características da Página
-
-### Design
-- Header fixo com logo e período
-- Cards coloridos por ranking (Verde, Rosa, Amarelo)
-- Gradientes e sombras
-- Botões fixos para Instagram e scroll-to-top
-
-### Mobile
-- Header sem transparência (mesmo padrão desktop)
-- Gradiente esquerda→direita
-- Título/episódio centralizado e alinhado à esquerda
-- Layout vertical adaptado
-
-### Funcionalidades
-- Links diretos para episódios no MyAnimeList
-- Efeitos hover sutis
-- Scroll suave para topo
-- Integração com Instagram
-
-## Personalização
-
-### Cores
-Modifique em `config.json` ou `scraper_utils.py`:
-```python
-colors = {
-    1: {"bg": "#88FE70", "text": "#212121"},      # 1º lugar - Verde
-    2: {"bg": "#FE70A9", "text": "#212121"},      # 2º/3º lugar - Rosa  
-    "other": {"bg": "#FECB70", "text": "#212121"} # Outros - Amarelo
-}
+### Estrutura do Projeto
+```
+projeto/
+├── main.py                          # Script original (episódios)
+├── main_integrated.py               # Script principal integrado ⭐
+├── anticipated_animes_scraper.py    # Scraper para animes esperados ⭐
+├── anticipated_html_generator.py    # Gerador HTML para animes esperados ⭐
+├── scraper_utils.py                 # Funções auxiliares existentes
+├── html_generator.py                # Gerador HTML existente
+├── styles.css → updated_styles.css  # CSS atualizado com menu ⭐
+├── script.js → script_updated.js    # JavaScript atualizado ⭐
+├── config.json → config_updated.json # Configuração atualizada ⭐
+├── requirements.txt                 # Dependências Python
+├── assets/                          # Imagens e recursos
+│   ├── logo_transparent.png
+│   ├── MAL_logo.png
+│   └── placeholder.png              # Nova: imagem fallback ⭐
+├── episodes_data.json               # Dados dos episódios (gerado)
+├── anticipated_animes_data.json     # Dados dos animes esperados (gerado) ⭐
+├── top_anime_episodes.html          # Página de episódios (gerada)
+├── top_anticipated_animes.html      # Página de animes esperados (gerada) ⭐
+└── error_log.txt                    # Log de erros
 ```
 
-### Layout
-- Edite `styles.css` para mudanças visuais
-- Modifique `html_generator.py` para estrutura HTML
-- Ajuste `script.js` para comportamentos
+## 🔧 Como Usar
 
-## Solução de Problemas
+### Modo Interativo (Recomendado)
+```bash
+python main_integrated.py --interactive
+```
 
-### Logs
-Verifique `error_log.txt` para erros detalhados
+Você verá um menu como este:
+```
+🎌 TOP ANIMES - SISTEMA DE RANKINGS
+====================================
+Escolha uma opção:
+1. Gerar ranking de episódios da semana
+2. Gerar ranking de animes mais esperados  
+3. Gerar ambos os rankings
+4. Apenas atualizar menus de navegação
+0. Sair
+```
 
-### Dados Vazios
-- Verifique se há animes com episódios na semana atual
-- Ajuste `min_members` no config para valor menor
-- Confirme se URLs do MyAnimeList estão acessíveis
+### Modo Linha de Comando
+```bash
+# Gerar apenas episódios da semana
+python main_integrated.py --mode weekly
 
-### CSS/JS não Carrega
-- Verifique se arquivos `styles.css` e `script.js` existem
-- Confirme paths corretos no `html_generator.py`
+# Gerar apenas animes esperados
+python main_integrated.py --mode anticipated
 
-## Dependências
+# Gerar ambos os rankings
+python main_integrated.py --mode both
 
-- `requests` - HTTP requests
-- `beautifulsoup4` - Parse HTML
-- `lxml` - Parser XML/HTML rápido
+# Atualizar apenas menus
+python main_integrated.py --mode menu
+```
 
-## Licença
+### Uso Individual dos Módulos
+```bash
+# Apenas animes esperados
+python anticipated_animes_scraper.py
 
-Projeto para uso educacional. Respeite os termos de uso do MyAnimeList.
+# Apenas gerar HTML dos esperados
+python anticipated_html_generator.py
+```
+
+## ⚙️ Configuração
+
+### Arquivo config_updated.json
+```json
+{
+  "anticipated_animes": {
+    "max_animes": 50,
+    "min_members": 1000,
+    "season": "Fall 2025"
