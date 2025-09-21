@@ -83,7 +83,7 @@ const ClientLayout: React.FC<ClientLayoutProps> = ({ children, periodInfo, heade
       {/* Header */}
       <header className="header">
         <div className="logo">
-          <img src="/assets/logo_transparent.png" alt="Top 10 Anime Logo" />
+          <img src="/top10animes/assets/logo_transparent.png" alt="Top 10 Anime Logo" />
         </div>
         <div className="header-content">
           <h1 className="header-title">{headerTitle} <span className="header-subtitle">OF THE WEEK</span></h1>
@@ -111,7 +111,7 @@ const ClientLayout: React.FC<ClientLayoutProps> = ({ children, periodInfo, heade
       <footer className="footer">
         <p className="footer-text">Average score from 0 to 5 obtained from:</p>
         <div className="footer-logo">
-          <img src="/assets/MAL_logo.png" alt="MyAnimeList Logo" style={{ width: '200px', height: 'auto' }} />
+          <img src="/top10animes/assets/MAL_logo.png" alt="MyAnimeList Logo" style={{ width: '200px', height: 'auto' }} />
         </div>
       </footer>
 
