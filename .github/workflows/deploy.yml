@@ -1,0 +1,52 @@
+name: Deploy Next.js to GitHub Pages
+
+on:
+  push:
+    branches:
+      - website # Deploy when changes are pushed to the 'website' branch
+      - master # Also deploy when changes are pushed to the 'master' branch
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    container: node:20 # Use a Docker container for the build environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use Node.js 20
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./frontend # Install dependencies in the frontend directory
+
+      - name: Build Next.js project
+        run: npm run build
+        working-directory: ./frontend # Build the project in the frontend directory
+        env:
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+
+      - name: Create .nojekyll file
+        run: touch ./frontend/out/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./frontend/out # Path to the build output directory
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
