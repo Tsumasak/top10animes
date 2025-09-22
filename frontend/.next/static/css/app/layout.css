@@ -190,8 +190,13 @@ body {
   width: 350px;
   height: 100%;
   background-size: cover;
-  background-position: center;
+  background-position: top center; /* Default top alignment */
   z-index: 1;
+  transition: background-position 0.5s ease-in; /* Smooth transition */
+}
+
+.episode-card:hover .episode-image {
+  background-position: center center; /* Center on hover */
 }
 
 .episode-gradient {

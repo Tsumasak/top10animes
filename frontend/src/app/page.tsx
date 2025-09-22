@@ -14,6 +14,8 @@ interface EpisodeData {
 
 interface EpisodesJsonData {
   generated_at: string;
+  start_date?: string;
+  end_date?: string;
   episodes: EpisodeData[];
 }
 
@@ -39,21 +41,18 @@ export default function WeeklyEpisodesPage() {
 
   const colors = getRankingColors();
 
-  // Determines the period dates (replicated from Python)
-  const today = new Date();
-  const startOfLastWeek = new Date(today);
-  startOfLastWeek.setDate(today.getDate() - (today.getDay() + 7) % 7);
-  const endOfLastWeek = new Date(startOfLastWeek);
-  endOfLastWeek.setDate(startOfLastWeek.getDate() + 6);
-
-  const formatDate = (date: Date) => {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
+  const formatDate = (dateString: string | undefined) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const year = date.getUTCFullYear();
     return `${day}/${month}/${year}`;
   };
 
-  const periodInfo = `${formatDate(startOfLastWeek).toUpperCase()} - ${formatDate(endOfLastWeek).toUpperCase()}`;
+  const periodInfo = episodesData.start_date && episodesData.end_date
+    ? `${formatDate(episodesData.start_date)} - ${formatDate(episodesData.end_date)}`
+    : 'Período não definido';
 
   return (
     <ClientLayout periodInfo={periodInfo}>

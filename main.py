@@ -68,10 +68,12 @@ def get_episodes_info(anime_url, start_date, end_date, api_anime_title):
         log_error(e)
         return None
 
-def save_data_to_json(episodes, filename='episodes_data.json'):
+def save_data_to_json(episodes, filename='episodes_data.json', start_date=None, end_date=None):
     """Salva os dados dos episódios em JSON para reuso"""
     data = {
         'generated_at': datetime.now().isoformat(),
+        'start_date': start_date,
+        'end_date': end_date,
         'episodes': episodes
     }
     with open(f"frontend/public/{filename}", 'w', encoding='utf-8') as f:
@@ -133,7 +135,7 @@ def run_weekly_ranking():
         episodes_with_score = sorted([ep for ep in all_episodes if ep['score'] > 0], key=lambda x: x['score'], reverse=True)
         top_50_episodes = episodes_with_score[:50]
         
-        save_data_to_json(top_50_episodes, filename='episodes_data.json')
+        save_data_to_json(top_50_episodes, filename='episodes_data.json', start_date=start_of_week, end_date=end_of_week)
         print("Ranking de episódios da semana gerado com sucesso!")
     except Exception as e:
         print(f"Erro ao gerar ranking semanal: {e}")
