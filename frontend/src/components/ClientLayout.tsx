@@ -83,7 +83,7 @@ const ClientLayout: React.FC<ClientLayoutProps> = ({ children, periodInfo, heade
       {/* Header */}
       <header className="header">
         <div className="logo">
-          <img src="/top10animes/assets/logo_transparent.png" alt="Top 10 Anime Logo" />
+          <img src="/assets/logo_transparent.png" alt="Top 10 Anime Logo" />
         </div>
         <div className="header-content">
           <h1 className="header-title">{headerTitle} <span className="header-subtitle">OF THE WEEK</span></h1>
@@ -111,7 +111,7 @@ const ClientLayout: React.FC<ClientLayoutProps> = ({ children, periodInfo, heade
       <footer className="footer">
         <p className="footer-text">Average score from 0 to 5 obtained from:</p>
         <div className="footer-logo">
-          <img src="/top10animes/assets/MAL_logo.png" alt="MyAnimeList Logo" style={{ width: '200px', height: 'auto' }} />
+          <img src="/assets/MAL_logo.png" alt="MyAnimeList Logo" style={{ width: '200px', height: 'auto' }} />
         </div>
       </footer>
 
@@ -121,7 +121,7 @@ const ClientLayout: React.FC<ClientLayoutProps> = ({ children, periodInfo, heade
           ↑
         </a>
         <a href="https://www.instagram.com/top10_animes" target="_blank" rel="noopener noreferrer" className="instagram-button">
-          <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/instagram-white-icon.png" alt="Instagram" style={{ width: '30px', height: '30px' }} />
+          <img src="/assets/instagram-white-icon.png" alt="Instagram" style={{ width: '30px', height: '30px' }} />
         </a>
       </div>
     </>
