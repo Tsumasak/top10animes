@@ -13,28 +13,56 @@ from mal_api import get_anticipated_animes, get_seasonal_animes
 
 # --- BLOCO DE FUNÇÕES DE COLETA DE DADOS (SEMANAL) ---
 
-def get_current_season():
-    """Determina o ano e a estação atual."""
-    d = datetime.now()
-    if 1 <= d.month <= 3:
-        return d.year, "winter"
-    if 4 <= d.month <= 6:
-        return d.year, "spring"
-    if 7 <= d.month <= 9:
-        return d.year, "summer"
-    return d.year, "fall"
+
+
+def get_season_from_date(d):
+    """Determina o ano e a estação a partir de uma data específica."""
+
+    year = d.year
+    # Define the start dates for each season for the given year
+    fall_start = datetime(year, 9, 22).date()
+    summer_start = datetime(year, 6, 21).date()
+    spring_start = datetime(year, 3, 20).date()
+    winter_start = datetime(year, 12, 21).date()
+
+    if d >= fall_start and d < winter_start:
+        return year, "fall"
+    elif d >= summer_start and d < fall_start:
+        return year, "summer"
+    elif d >= spring_start and d < summer_start:
+        return year, "spring"
+    else: # Covers winter, including the wrap-around from December to the next year's March
+        # If the date is in the early part of the year (before spring_start)
+        if d < spring_start:
+            return year -1, "winter" # It's the winter season that started last year
+        else: # It must be in the late part of the year (after winter_start)
+            return year, "winter"
 
 def get_episodes_info(anime_url, start_date, end_date, api_anime_title):
     try:
         episodes_url = anime_url.rstrip('/') + '/episode'
         debug_print(f"Acessando pßgina de episdios: {episodes_url}", 3)
         headers = {'User-Agent': 'Mozilla/5.0'}
+        
+        # Primeira requisição para encontrar a última página
         response = requests.get(episodes_url, headers=headers)
         if response.status_code == 404:
             debug_print(f"Pßgina de episdios nÒo encontrada (404): {episodes_url}", 2)
             return None
         response.raise_for_status()
         soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Lógica para encontrar e ir para a última página de episódios
+        pagination_div = soup.find('div', class_='pagination')
+        if pagination_div:
+            last_page_link = pagination_div.find_all('a')[-1] # Pega o último link da paginação
+            if last_page_link and 'href' in last_page_link.attrs:
+                last_page_url = last_page_link['href']
+                debug_print(f"Paginação encontrada. Acessando última página: {last_page_url}", 2)
+                response = requests.get(last_page_url, headers=headers)
+                response.raise_for_status()
+                soup = BeautifulSoup(response.content, 'html.parser')
+
         # Usar o título do anime passado via API, em vez de raspar
         anime_title = api_anime_title
         episode_table = soup.find('table', class_='episode_list')
@@ -101,9 +129,25 @@ def run_weekly_ranking():
             except ValueError:
                 print("Erro: Formato de data inválido. Use DD/MM/AAAA. Tente novamente.")
 
-        year, season = get_current_season()
-        # 1. Usar a API para buscar a lista de animes da temporada
-        anime_list = get_seasonal_animes(year, season)
+        # 1. Buscar animes da temporada atual e da anterior para incluir animes contínuos
+        current_year, current_season = get_season_from_date(start_of_week)
+        
+        seasons_to_check = [(current_year, current_season)]
+        if current_season == "winter":
+            seasons_to_check.append((current_year - 1, "fall"))
+        elif current_season == "spring":
+            seasons_to_check.append((current_year, "winter"))
+        elif current_season == "summer":
+            seasons_to_check.append((current_year, "spring"))
+        else: # fall
+            seasons_to_check.append((current_year, "summer"))
+
+        all_animes = []
+        for year, season in seasons_to_check:
+            all_animes.extend(get_seasonal_animes(year, season, limit=500, min_members=20000))
+
+        # Remover duplicatas (animes que podem aparecer em ambas as listas)
+        anime_list = list({anime['url']: anime for anime in all_animes}.values())
         
         if not anime_list:
             debug_print("Nenhum anime encontrado via API para o ranking semanal.", 1)

@@ -1,293 +1,176 @@
 {
-  "generated_at": "2025-09-22T12:37:39.870798",
-  "start_date": "2025-09-15",
-  "end_date": "2025-09-21",
+  "generated_at": "2025-09-28T13:57:33.009646",
+  "start_date": "2025-09-22",
+  "end_date": "2025-09-28",
   "episodes": [
     {
+      "anime_title": "Ruri Rocks",
+      "episode_number": "13",
+      "episode_title": "Look Up, Examine, Search! And Next!",
+      "score": 4.78,
+      "airdate": "2025-09-28",
+      "image": "https://cdn.myanimelist.net/images/anime/1067/145403l.jpg",
+      "url": "https://myanimelist.net/anime/59791/Ruri_Rocks"
+    },
+    {
       "anime_title": "The Fragrant Flower Blooms with Dignity",
-      "episode_number": "12",
-      "episode_title": "Bewilderment at the Beachside",
-      "score": 4.75,
-      "airdate": "2025-09-21",
+      "episode_number": "13",
+      "episode_title": "Kaoruko and Rintaro",
+      "score": 4.7,
+      "airdate": "2025-09-28",
       "image": "https://cdn.myanimelist.net/images/anime/1013/148711l.jpg",
       "url": "https://myanimelist.net/anime/59845/The_Fragrant_Flower_Blooms_with_Dignity"
     },
     {
       "anime_title": "Grand Blue Dreaming Season 2",
-      "episode_number": "11",
-      "episode_title": "Let's Go to an Uninhabited Island!",
-      "score": 4.65,
-      "airdate": "2025-09-16",
+      "episode_number": "12",
+      "episode_title": "Now We're Even",
+      "score": 4.57,
+      "airdate": "2025-09-23",
       "image": "https://cdn.myanimelist.net/images/anime/1278/145814l.jpg",
       "url": "https://myanimelist.net/anime/59986/Grand_Blue_Dreaming_Season_2"
     },
     {
-      "anime_title": "Toilet-Bound Hanako-kun Season 2 Part 2",
-      "episode_number": "12",
-      "episode_title": "Wishes",
-      "score": 4.65,
-      "airdate": "2025-09-21",
-      "image": "https://cdn.myanimelist.net/images/anime/1896/148886l.jpg",
-      "url": "https://myanimelist.net/anime/61339/ToiletBound_Hanakokun_Season_2_Part_2"
-    },
-    {
-      "anime_title": "Rascal Does Not Dream of Santa Claus",
-      "episode_number": "12",
-      "episode_title": "Reindeer's Work",
-      "score": 4.63,
-      "airdate": "2025-09-20",
-      "image": "https://cdn.myanimelist.net/images/anime/1721/140138l.jpg",
-      "url": "https://myanimelist.net/anime/57433/Rascal_Does_Not_Dream_of_Santa_Claus"
-    },
-    {
-      "anime_title": "Ruri Rocks",
-      "episode_number": "12",
-      "episode_title": "Memories Come with Rocks and Noise",
-      "score": 4.63,
-      "airdate": "2025-09-21",
-      "image": "https://cdn.myanimelist.net/images/anime/1067/145403l.jpg",
-      "url": "https://myanimelist.net/anime/59791/Ruri_Rocks"
-    },
-    {
-      "anime_title": "The Summer Hikaru Died",
-      "episode_number": "11",
-      "episode_title": "Indo's Sin",
-      "score": 4.56,
-      "airdate": "2025-09-21",
-      "image": "https://cdn.myanimelist.net/images/anime/1468/146663l.jpg",
-      "url": "https://myanimelist.net/anime/58913/The_Summer_Hikaru_Died"
-    },
-    {
-      "anime_title": "With You and the Rain",
-      "episode_number": "12",
-      "episode_title": "I Can Hear the Sound of the Rain",
-      "score": 4.54,
-      "airdate": "2025-09-21",
-      "image": "https://cdn.myanimelist.net/images/anime/1762/144968l.jpg",
-      "url": "https://myanimelist.net/anime/59619/With_You_and_the_Rain"
-    },
-    {
-      "anime_title": "Call of the Night Season 2",
-      "episode_number": "12",
-      "episode_title": "Call of the Night",
-      "score": 4.53,
-      "airdate": "2025-09-19",
-      "image": "https://cdn.myanimelist.net/images/anime/1997/141936l.jpg",
-      "url": "https://myanimelist.net/anime/58390/Call_of_the_Night_Season_2"
-    },
-    {
-      "anime_title": "Clevatess",
-      "episode_number": "12",
-      "episode_title": "Return of the King",
-      "score": 4.52,
-      "airdate": "2025-09-17",
-      "image": "https://cdn.myanimelist.net/images/anime/1433/143960l.jpg",
-      "url": "https://myanimelist.net/anime/59205/Clevatess"
-    },
-    {
       "anime_title": "Dealing with Mikadono Sisters Is a Breeze",
-      "episode_number": "11",
-      "episode_title": "I Already Knew It",
-      "score": 4.5,
-      "airdate": "2025-09-18",
+      "episode_number": "12",
+      "episode_title": "For Someone Else",
+      "score": 4.52,
+      "airdate": "2025-09-25",
       "image": "https://cdn.myanimelist.net/images/anime/1251/143986l.jpg",
       "url": "https://myanimelist.net/anime/59207/Dealing_with_Mikadono_Sisters_Is_a_Breeze"
     },
     {
-      "anime_title": "Dan Da Dan Season 2",
+      "anime_title": "The Summer Hikaru Died",
       "episode_number": "12",
-      "episode_title": "Clash! Space Kaiju vs. Giant Robot!",
+      "episode_title": "Its Place",
       "score": 4.49,
-      "airdate": "2025-09-19",
-      "image": "https://cdn.myanimelist.net/images/anime/1098/147000l.jpg",
-      "url": "https://myanimelist.net/anime/60543/Dan_Da_Dan_Season_2"
-    },
-    {
-      "anime_title": "Bad Girl",
-      "episode_number": "12",
-      "episode_title": "Goodbye / I'll Give You All of Them! / The Ultimate Bad Girl / Suzu-chan is All Mine",
-      "score": 4.47,
-      "airdate": "2025-09-21",
-      "image": "https://cdn.myanimelist.net/images/anime/1027/143761l.jpg",
-      "url": "https://myanimelist.net/anime/59161/Bad_Girl"
-    },
-    {
-      "anime_title": "Secrets of the Silent Witch",
-      "episode_number": "11",
-      "episode_title": "My Friend",
-      "score": 4.44,
-      "airdate": "2025-09-20",
-      "image": "https://cdn.myanimelist.net/images/anime/1117/144612l.jpg",
-      "url": "https://myanimelist.net/anime/59459/Secrets_of_the_Silent_Witch"
+      "airdate": "2025-09-28",
+      "image": "https://cdn.myanimelist.net/images/anime/1468/146663l.jpg",
+      "url": "https://myanimelist.net/anime/58913/The_Summer_Hikaru_Died"
     },
     {
       "anime_title": "City The Animation",
-      "episode_number": "11",
-      "episode_title": "Morning Routine / Bonjour Everyone / Living in the City / Surprising Shogi / A Boring Afternoon - Mambo No. 5 / Toudou and Lingering Thoughts",
-      "score": 4.43,
-      "airdate": "2025-09-15",
+      "episode_number": "12",
+      "episode_title": "Summer’ Photo Contest / Niikura and the Road / CITY Grand Prize / Farewell Speech / Vocabulary / Wishing on a Star",
+      "score": 4.47,
+      "airdate": "2025-09-22",
       "image": "https://cdn.myanimelist.net/images/anime/1829/145678l.jpg",
       "url": "https://myanimelist.net/anime/59898/City_The_Animation"
     },
     {
-      "anime_title": "Yaiba: Samurai Legend",
-      "episode_number": "23",
-      "episode_title": "The Dragon God Orb Resurrected!",
-      "score": 4.38,
-      "airdate": "2025-09-20",
-      "image": "https://cdn.myanimelist.net/images/anime/1937/146622l.jpg",
-      "url": "https://myanimelist.net/anime/58812/Yaiba_Samurai_Legend"
-    },
-    {
-      "anime_title": "My Dress-Up Darling Season 2",
-      "episode_number": "12",
-      "episode_title": "Dear My Dress-Up Darling",
-      "score": 4.36,
-      "airdate": "2025-09-21",
-      "image": "https://cdn.myanimelist.net/images/anime/1160/128045l.jpg",
-      "url": "https://myanimelist.net/anime/53065/My_DressUp_Darling_Season_2"
-    },
-    {
-      "anime_title": "Betrothed to My Sister's Ex",
-      "episode_number": "12",
-      "episode_title": "It's Time to Settle This",
-      "score": 4.36,
-      "airdate": "2025-09-20",
-      "image": "https://cdn.myanimelist.net/images/anime/1791/147016l.jpg",
-      "url": "https://myanimelist.net/anime/59421/Betrothed_to_My_Sisters_Ex"
-    },
-    {
-      "anime_title": "Kaiju No. 8 Season 2",
-      "episode_number": "10",
-      "episode_title": "Cataclysms",
-      "score": 4.35,
-      "airdate": "2025-09-20",
-      "image": "https://cdn.myanimelist.net/images/anime/1049/147109l.jpg",
-      "url": "https://myanimelist.net/anime/59177/Kaiju_No_8_Season_2"
-    },
-    {
-      "anime_title": "Detectives These Days Are Crazy!",
-      "episode_number": "12",
-      "episode_title": "Nagumo Dons the Haori / Producing Nagumo Detective Agency / Nagumo Detective Agency Shuts Down",
-      "score": 4.35,
-      "airdate": "2025-09-16",
-      "image": "https://cdn.myanimelist.net/images/anime/1774/145011l.jpg",
-      "url": "https://myanimelist.net/anime/59632/Detectives_These_Days_Are_Crazy"
-    },
-    {
-      "anime_title": "The Shy Hero and the Assassin Princesses",
-      "episode_number": "12",
-      "episode_title": "The Shy Hero and the Assassin Princesses",
-      "score": 4.33,
-      "airdate": "2025-09-20",
-      "image": "https://cdn.myanimelist.net/images/anime/1393/147895l.jpg",
-      "url": "https://myanimelist.net/anime/60951/The_Shy_Hero_and_the_Assassin_Princesses"
-    },
-    {
-      "anime_title": "Gachiakuta",
-      "episode_number": "11",
-      "episode_title": "Amo's Hospitality",
-      "score": 4.3,
-      "airdate": "2025-09-21",
-      "image": "https://cdn.myanimelist.net/images/anime/1543/143560l.jpg",
-      "url": "https://myanimelist.net/anime/59062/Gachiakuta"
+      "anime_title": "Rascal Does Not Dream of Santa Claus",
+      "episode_number": "13",
+      "episode_title": "No Dreams of Santa Claus",
+      "score": 4.46,
+      "airdate": "2025-09-27",
+      "image": "https://cdn.myanimelist.net/images/anime/1721/140138l.jpg",
+      "url": "https://myanimelist.net/anime/57433/Rascal_Does_Not_Dream_of_Santa_Claus"
     },
     {
       "anime_title": "Summer Pockets",
-      "episode_number": "24",
-      "episode_title": "Where the Sunshine Is",
-      "score": 4.27,
-      "airdate": "2025-09-15",
+      "episode_number": "25",
+      "episode_title": "Memories of the Future",
+      "score": 4.42,
+      "airdate": "2025-09-22",
       "image": "https://cdn.myanimelist.net/images/anime/1967/143798l.jpg",
       "url": "https://myanimelist.net/anime/50694/Summer_Pockets"
     },
     {
-      "anime_title": "Witch Watch",
-      "episode_number": "24",
-      "episode_title": "Moi's Denim Devotion / Date with the Guide",
-      "score": 4.24,
-      "airdate": "2025-09-21",
-      "image": "https://cdn.myanimelist.net/images/anime/1832/144857l.jpg",
-      "url": "https://myanimelist.net/anime/59597/Witch_Watch"
+      "anime_title": "Gachiakuta",
+      "episode_number": "12",
+      "episode_title": "Something Like a Curse",
+      "score": 4.4,
+      "airdate": "2025-09-28",
+      "image": "https://cdn.myanimelist.net/images/anime/1543/143560l.jpg",
+      "url": "https://myanimelist.net/anime/59062/Gachiakuta"
+    },
+    {
+      "anime_title": "Secrets of the Silent Witch",
+      "episode_number": "12",
+      "episode_title": "Monica Becomes a Delinquent",
+      "score": 4.4,
+      "airdate": "2025-09-27",
+      "image": "https://cdn.myanimelist.net/images/anime/1117/144612l.jpg",
+      "url": "https://myanimelist.net/anime/59459/Secrets_of_the_Silent_Witch"
     },
     {
       "anime_title": "Solo Camping for Two",
-      "episode_number": "11",
-      "episode_title": "Goodbye, Gen-kun",
-      "score": 4.24,
-      "airdate": "2025-09-19",
+      "episode_number": "12",
+      "episode_title": "My Personal Preferences",
+      "score": 4.29,
+      "airdate": "2025-09-26",
       "image": "https://cdn.myanimelist.net/images/anime/1449/147268l.jpg",
       "url": "https://myanimelist.net/anime/60665/Solo_Camping_for_Two"
     },
     {
-      "anime_title": "Welcome to the Outcast's Restaurant!",
-      "episode_number": "12",
-      "episode_title": "Welcome to the Outcast's Restaurant!",
-      "score": 4.14,
-      "airdate": "2025-09-18",
-      "image": "https://cdn.myanimelist.net/images/anime/1212/146964l.jpg",
-      "url": "https://myanimelist.net/anime/60523/Welcome_to_the_Outcasts_Restaurant"
+      "anime_title": "Yaiba: Samurai Legend",
+      "episode_number": "24",
+      "episode_title": "The Lunar Invaders",
+      "score": 4.28,
+      "airdate": "2025-09-27",
+      "image": "https://cdn.myanimelist.net/images/anime/1937/146622l.jpg",
+      "url": "https://myanimelist.net/anime/58812/Yaiba_Samurai_Legend"
+    },
+    {
+      "anime_title": "Kaiju No. 8 Season 2",
+      "episode_number": "11",
+      "episode_title": "Second Wave",
+      "score": 4.27,
+      "airdate": "2025-09-27",
+      "image": "https://cdn.myanimelist.net/images/anime/1049/147109l.jpg",
+      "url": "https://myanimelist.net/anime/59177/Kaiju_No_8_Season_2"
+    },
+    {
+      "anime_title": "Sword of the Demon Hunter: Kijin Gentosho",
+      "episode_number": "23",
+      "episode_title": "Episode 23",
+      "score": 4.09,
+      "airdate": "2025-09-23",
+      "image": "https://cdn.myanimelist.net/images/anime/1373/117585l.jpg",
+      "url": "https://myanimelist.net/anime/49778/Sword_of_the_Demon_Hunter_Kijin_Gentosho"
     },
     {
       "anime_title": "Nyaight of the Living Cat",
-      "episode_number": "11",
-      "episode_title": "Transformeows",
-      "score": 4.01,
-      "airdate": "2025-09-16",
+      "episode_number": "12",
+      "episode_title": "Meow Am Legend",
+      "score": 3.95,
+      "airdate": "2025-09-23",
       "image": "https://cdn.myanimelist.net/images/anime/1177/141554l.jpg",
       "url": "https://myanimelist.net/anime/58197/Nyaight_of_the_Living_Cat"
     },
     {
-      "anime_title": "Tougen Anki",
-      "episode_number": "11",
-      "episode_title": "Thank You!",
-      "score": 3.97,
-      "airdate": "2025-09-19",
-      "image": "https://cdn.myanimelist.net/images/anime/1609/142896l.jpg",
-      "url": "https://myanimelist.net/anime/58811/Tougen_Anki"
+      "anime_title": "The Rising of the Shield Hero Season 4",
+      "episode_number": "12",
+      "episode_title": "Return of the Emperor",
+      "score": 3.89,
+      "airdate": "2025-09-24",
+      "image": "https://cdn.myanimelist.net/images/anime/1887/141052l.jpg",
+      "url": "https://myanimelist.net/anime/57907/The_Rising_of_the_Shield_Hero_Season_4"
     },
     {
       "anime_title": "Private Tutor to the Duke's Daughter",
-      "episode_number": "11",
-      "episode_title": "On a Night when the Moon and Stars Shine Bright",
-      "score": 3.9,
-      "airdate": "2025-09-21",
+      "episode_number": "12",
+      "episode_title": "The Girls' Battle",
+      "score": 3.89,
+      "airdate": "2025-09-28",
       "image": "https://cdn.myanimelist.net/images/anime/1431/146723l.jpg",
       "url": "https://myanimelist.net/anime/56907/Private_Tutor_to_the_Dukes_Daughter"
     },
     {
       "anime_title": "Watari-kun's ****** Is about to Collapse",
-      "episode_number": "12",
-      "episode_title": "Being Independent",
-      "score": 3.8,
-      "airdate": "2025-09-20",
+      "episode_number": "13",
+      "episode_title": "Do You Really Love Her?",
+      "score": 3.78,
+      "airdate": "2025-09-27",
       "image": "https://cdn.myanimelist.net/images/anime/1251/148434l.jpg",
       "url": "https://myanimelist.net/anime/56693/Watarikuns__Is_about_to_Collapse"
     },
     {
-      "anime_title": "New Saga",
-      "episode_number": "12",
-      "episode_title": "The Heroic Tale Continues",
-      "score": 3.77,
-      "airdate": "2025-09-18",
-      "image": "https://cdn.myanimelist.net/images/anime/1943/129491l.jpg",
-      "url": "https://myanimelist.net/anime/53397/New_Saga"
-    },
-    {
-      "anime_title": "Rent-a-Girlfriend Season 4",
-      "episode_number": "12",
-      "episode_title": "Paradise and Girlfriend",
-      "score": 3.12,
-      "airdate": "2025-09-16",
-      "image": "https://cdn.myanimelist.net/images/anime/1765/147511l.jpg",
-      "url": "https://myanimelist.net/anime/59277/RentaGirlfriend_Season_4"
-    },
-    {
       "anime_title": "The Water Magician",
-      "episode_number": "11",
-      "episode_title": "The Inferno Magician",
-      "score": 3.03,
-      "airdate": "2025-09-19",
+      "episode_number": "12",
+      "episode_title": "Ryo Returns Home",
+      "score": 3.75,
+      "airdate": "2025-09-26",
       "image": "https://cdn.myanimelist.net/images/anime/1224/147443l.jpg",
       "url": "https://myanimelist.net/anime/60732/The_Water_Magician"
     }
