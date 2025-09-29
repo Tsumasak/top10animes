@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-09-29T11:03:20.281861",
+  "generated_at": "2025-09-29T16:29:15.449694",
   "start_date": "2025-09-22",
   "end_date": "2025-09-28",
   "episodes": [
@@ -16,7 +16,7 @@
       "anime_title": "The Fragrant Flower Blooms with Dignity",
       "episode_number": "13",
       "episode_title": "Kaoruko and Rintaro",
-      "score": 4.69,
+      "score": 4.7,
       "airdate": "2025-09-28",
       "image": "https://cdn.myanimelist.net/images/anime/1013/148711l.jpg",
       "url": "https://myanimelist.net/anime/59845/The_Fragrant_Flower_Blooms_with_Dignity"
@@ -31,6 +31,15 @@
       "url": "https://myanimelist.net/anime/59986/Grand_Blue_Dreaming_Season_2"
     },
     {
+      "anime_title": "Gachiakuta",
+      "episode_number": "12",
+      "episode_title": "Something Like a Curse",
+      "score": 4.52,
+      "airdate": "2025-09-28",
+      "image": "https://cdn.myanimelist.net/images/anime/1543/143560l.jpg",
+      "url": "https://myanimelist.net/anime/59062/Gachiakuta"
+    },
+    {
       "anime_title": "Dealing with Mikadono Sisters Is a Breeze",
       "episode_number": "12",
       "episode_title": "For Someone Else",
@@ -38,15 +47,6 @@
       "airdate": "2025-09-25",
       "image": "https://cdn.myanimelist.net/images/anime/1251/143986l.jpg",
       "url": "https://myanimelist.net/anime/59207/Dealing_with_Mikadono_Sisters_Is_a_Breeze"
-    },
-    {
-      "anime_title": "Gachiakuta",
-      "episode_number": "12",
-      "episode_title": "Something Like a Curse",
-      "score": 4.51,
-      "airdate": "2025-09-28",
-      "image": "https://cdn.myanimelist.net/images/anime/1543/143560l.jpg",
-      "url": "https://myanimelist.net/anime/59062/Gachiakuta"
     },
     {
       "anime_title": "The Summer Hikaru Died",
@@ -70,7 +70,7 @@
       "anime_title": "City The Animation",
       "episode_number": "12",
       "episode_title": "Summer’ Photo Contest / Niikura and the Road / CITY Grand Prize / Farewell Speech / Vocabulary / Wishing on a Star",
-      "score": 4.46,
+      "score": 4.45,
       "airdate": "2025-09-22",
       "image": "https://cdn.myanimelist.net/images/anime/1829/145678l.jpg",
       "url": "https://myanimelist.net/anime/59898/City_The_Animation"
@@ -97,7 +97,7 @@
       "anime_title": "Yaiba: Samurai Legend",
       "episode_number": "24",
       "episode_title": "The Lunar Invaders",
-      "score": 4.33,
+      "score": 4.31,
       "airdate": "2025-09-27",
       "image": "https://cdn.myanimelist.net/images/anime/1937/146622l.jpg",
       "url": "https://myanimelist.net/anime/58812/Yaiba_Samurai_Legend"
@@ -115,7 +115,7 @@
       "anime_title": "Kaiju No. 8 Season 2",
       "episode_number": "11",
       "episode_title": "Second Wave",
-      "score": 4.27,
+      "score": 4.28,
       "airdate": "2025-09-27",
       "image": "https://cdn.myanimelist.net/images/anime/1049/147109l.jpg",
       "url": "https://myanimelist.net/anime/59177/Kaiju_No_8_Season_2"
@@ -133,7 +133,7 @@
       "anime_title": "Nyaight of the Living Cat",
       "episode_number": "12",
       "episode_title": "Meow Am Legend",
-      "score": 3.95,
+      "score": 3.96,
       "airdate": "2025-09-23",
       "image": "https://cdn.myanimelist.net/images/anime/1177/141554l.jpg",
       "url": "https://myanimelist.net/anime/58197/Nyaight_of_the_Living_Cat"
@@ -142,7 +142,7 @@
       "anime_title": "The Rising of the Shield Hero Season 4",
       "episode_number": "12",
       "episode_title": "Return of the Emperor",
-      "score": 3.89,
+      "score": 3.88,
       "airdate": "2025-09-24",
       "image": "https://cdn.myanimelist.net/images/anime/1887/141052l.jpg",
       "url": "https://myanimelist.net/anime/57907/The_Rising_of_the_Shield_Hero_Season_4"
@@ -151,7 +151,7 @@
       "anime_title": "Private Tutor to the Duke's Daughter",
       "episode_number": "12",
       "episode_title": "The Girls' Battle",
-      "score": 3.89,
+      "score": 3.88,
       "airdate": "2025-09-28",
       "image": "https://cdn.myanimelist.net/images/anime/1431/146723l.jpg",
       "url": "https://myanimelist.net/anime/56907/Private_Tutor_to_the_Dukes_Daughter"
@@ -160,7 +160,7 @@
       "anime_title": "Watari-kun's ****** Is about to Collapse",
       "episode_number": "13",
       "episode_title": "Do You Really Love Her?",
-      "score": 3.8,
+      "score": 3.81,
       "airdate": "2025-09-27",
       "image": "https://cdn.myanimelist.net/images/anime/1251/148434l.jpg",
       "url": "https://myanimelist.net/anime/56693/Watarikuns__Is_about_to_Collapse"
@@ -169,7 +169,7 @@
       "anime_title": "The Water Magician",
       "episode_number": "12",
       "episode_title": "Ryo Returns Home",
-      "score": 3.75,
+      "score": 3.76,
       "airdate": "2025-09-26",
       "image": "https://cdn.myanimelist.net/images/anime/1224/147443l.jpg",
       "url": "https://myanimelist.net/anime/60732/The_Water_Magician"
@@ -178,7 +178,7 @@
       "anime_title": "Tougen Anki",
       "episode_number": "12",
       "episode_title": "Day of the Storm",
-      "score": 3.71,
+      "score": 3.72,
       "airdate": "2025-09-26",
       "image": "https://cdn.myanimelist.net/images/anime/1609/142896l.jpg",
       "url": "https://myanimelist.net/anime/58811/Tougen_Anki"
