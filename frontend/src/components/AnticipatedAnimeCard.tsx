@@ -1,44 +1,37 @@
+import React from 'react';
+import BaseAnimeCard from './BaseAnimeCard';
+
 interface AnticipatedAnimeCardProps {
-  ranking: number;
-  animeTitle: string;
-  membersDisplay: string;
-  imageUrl: string;
-  animeUrl: string;
-  cardClass: string;
-  rankBgColor: string;
-  rankTextColor: string;
-  membersColor: string;
+  anime: {
+    title: string;
+    image_url: string;
+    members: number;
+    mal_url: string;
+    season: string;
+    year: number;
+    demographics?: string[]; // New demographics array
+    genres?: string[]; // New genres array
+    themes?: string[]; // New themes array
+  };
+  rank: number; // Added rank prop
 }
 
-export default function AnticipatedAnimeCard({
-  ranking,
-  animeTitle,
-  membersDisplay,
-  imageUrl,
-  animeUrl,
-  cardClass,
-  rankBgColor,
-  rankTextColor,
-  membersColor,
-}: AnticipatedAnimeCardProps) {
+const AnticipatedAnimeCard: React.FC<AnticipatedAnimeCardProps> = ({ anime, rank }) => {
+  const membersText = `${anime.members.toLocaleString()} Plan to Watch`;
+
   return (
-    <a href={animeUrl} target="_blank" rel="noopener" style={{ textDecoration: 'none', color: 'inherit', display: 'contents' }}>
-      <div className={`episode-card ${cardClass}`}>
-        <div className="rank-section" style={{ backgroundColor: rankBgColor, color: rankTextColor }}>
-          {ranking}
-        </div>
-        <div className="episode-content">
-          <div className="episode-info-container">
-            <h2 className="episode-title" style={{ color: rankBgColor }}>{animeTitle}</h2>
-          </div>
-          <div className="episode-image" style={{ backgroundImage: `url('${imageUrl}')` }}></div>
-          <div className="episode-gradient"></div>
-        </div>
-        <div className="score-section">
-          <p className="score-label">Plan to Watch</p>
-          <p className="score-value" style={{ color: membersColor }}>{membersDisplay}</p>
-        </div>
-      </div>
-    </a>
+    <BaseAnimeCard
+      rank={rank}
+      title={anime.title}
+      subtitle="" // Remove season info as it's redundant now with demographics/genres/themes
+      imageUrl={anime.image_url}
+      linkUrl={anime.mal_url}
+      bottomText={membersText}
+      demographics={anime.demographics}
+      genres={anime.genres}
+      themes={anime.themes}
+    />
   );
-}
+};
+
+export default AnticipatedAnimeCard;
