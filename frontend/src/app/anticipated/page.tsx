@@ -33,16 +33,34 @@ export default function AnticipatedAnimesPage() {
   try {
     const filePath = path.join(process.cwd(), 'public', 'anticipated_animes_data.json');
     const fileContents = fs.readFileSync(filePath, 'utf8');
-    animesData = JSON.parse(fileContents);
+    const rawData = JSON.parse(fileContents);
+    
+    // Handle both formats: array and object
+    if (Array.isArray(rawData)) {
+      animesData = {
+        generated_date: new Date().toISOString(),
+        season: "Current Season",
+        total_animes: rawData.length,
+        animes: rawData
+      };
+    } else {
+      animesData = rawData;
+    }
+    
+    // Ensure animes array exists
+    if (!animesData.animes) {
+      animesData.animes = [];
+    }
   } catch (error) {
     console.error("Error reading anticipated_animes_data.json:", error);
+    animesData = { generated_date: "", season: "", total_animes: 0, animes: [] };
   }
 
   const colors = getRankingColors();
 
   return (
     <ClientLayout periodInfo={animesData.season.toUpperCase()} headerTitle="TOP 50 MOST ANTICIPATED ANIMES">
-      {animesData.animes.map((anime) => {
+      {animesData.animes && animesData.animes.length > 0 ? animesData.animes.map((anime) => {
           const rank = anime.ranking;
           const isFirst = rank === 1;
           const isTop3 = rank <= 3;
@@ -78,7 +96,12 @@ export default function AnticipatedAnimesPage() {
               membersColor={membersColor}
             />
           );
-        })}
+        }) : (
+          <div className="text-center text-gray-500 mt-8">
+            <p>Nenhum anime antecipado encontrado.</p>
+            <p>Execute o sistema backend para gerar os dados.</p>
+          </div>
+        )}
     </ClientLayout>
   );
 }

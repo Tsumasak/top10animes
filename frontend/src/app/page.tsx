@@ -5,11 +5,19 @@ import ClientLayout from '@/components/ClientLayout';
 
 interface EpisodeData {
   anime_title: string;
-  episode_number: string;
+  episode_number: number;
   episode_title: string;
   score: number;
-  image: string;
-  url: string;
+  anime_image: string;
+  anime_url: string;
+  episode_url?: string | null;
+  airdate: string;
+  anime_score: number;
+  anime_members: number;
+  anime_rank: number;
+  genres: string[];
+  studios: string[];
+  slug: string;
 }
 
 interface EpisodesJsonData {
@@ -34,9 +42,25 @@ export default function WeeklyEpisodesPage() {
   try {
     const filePath = path.join(process.cwd(), 'public', 'episodes_data.json');
     const fileContents = fs.readFileSync(filePath, 'utf8');
-    episodesData = JSON.parse(fileContents);
+    const rawData = JSON.parse(fileContents);
+    
+    // Handle both formats: array and object
+    if (Array.isArray(rawData)) {
+      episodesData = {
+        generated_at: new Date().toISOString(),
+        episodes: rawData
+      };
+    } else {
+      episodesData = rawData;
+    }
+    
+    // Ensure episodes array exists
+    if (!episodesData.episodes) {
+      episodesData.episodes = [];
+    }
   } catch (error) {
     console.error("Error reading episodes_data.json:", error);
+    episodesData = { generated_at: "", episodes: [] };
   }
 
   const colors = getRankingColors();
@@ -56,7 +80,7 @@ export default function WeeklyEpisodesPage() {
 
   return (
     <ClientLayout periodInfo={periodInfo}>
-      {episodesData.episodes.map((episode, index) => {
+      {episodesData.episodes && episodesData.episodes.length > 0 ? episodesData.episodes.map((episode, index) => {
           const rank = index + 1;
           const isFirst = rank === 1;
           const isTop3 = rank <= 3;
@@ -80,21 +104,26 @@ export default function WeeklyEpisodesPage() {
 
           return (
             <EpisodeCard
-              key={episode.url + episode.episode_number} // Unique key
+              key={episode.anime_url + episode.episode_number} // Unique key
               ranking={rank}
               animeTitle={episode.anime_title}
-              episodeNumber={episode.episode_number}
+              episodeNumber={episode.episode_number.toString()}
               episodeTitle={episode.episode_title}
               score={episode.score}
-              imageUrl={episode.image}
-              animeUrl={episode.url}
+              imageUrl={episode.anime_image}
+              animeUrl={episode.anime_url}
               cardClass={cardClass}
               rankBgColor={rankBgColor}
               rankTextColor={rankTextColor}
               scoreColor={scoreColor}
             />
           );
-        })}
+        }) : (
+          <div className="text-center text-gray-500 mt-8">
+            <p>Nenhum episódio encontrado.</p>
+            <p>Execute o sistema backend para gerar os dados.</p>
+          </div>
+        )}
     </ClientLayout>
   );
 }

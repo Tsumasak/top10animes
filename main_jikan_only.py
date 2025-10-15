@@ -12,9 +12,6 @@ from jikan_api import get_anticipated_animes, make_jikan_request, _get_safe_titl
 from update_anticipated_animes import get_anticipated_animes_full, save_anticipated_animes_data
 from update_top_episodes import get_top_episodes_jikan, save_episodes_data
 
-# Importar versão SUPER RÁPIDA
-from update_top_episodes_fast import get_top_episodes_fast, save_episodes_data_fast
-
 def get_config():
     """Carrega a configuração do arquivo JSON."""
     with open('config.json', 'r') as f:
@@ -44,22 +41,15 @@ def get_period_input():
                 end_date = start_date + timedelta(days=6)
                 
             elif choice == "2":
-                # Última semana (domingo a sábado) - sempre domingo até sábado mais recente
+                # Última semana
                 today = date.today()
+                days_since_sunday = today.weekday() + 1
+                if days_since_sunday == 7:
+                    days_since_sunday = 0
                 
-                # Se hoje é domingo, queremos a semana que vai do domingo passado até hoje
-                if today.weekday() == 6:  # Hoje é domingo
-                    start_date = today - timedelta(days=6)  # Domingo da semana passada
-                    end_date = today  # Hoje (domingo)
-                else:
-                    # Encontrar o domingo da semana atual
-                    days_since_sunday = (today.weekday() + 1) % 7
-                    current_sunday = today - timedelta(days=days_since_sunday)
-                    
-                    # Do domingo até o sábado desta semana (ou hoje se ainda não é sábado)
-                    start_date = current_sunday
-                    week_saturday = current_sunday + timedelta(days=6)
-                    end_date = min(today, week_saturday)
+                this_sunday = today - timedelta(days=days_since_sunday)
+                start_date = this_sunday - timedelta(days=7)
+                end_date = this_sunday - timedelta(days=1)
                 
             elif choice == "3":
                 # Período personalizado
@@ -105,37 +95,21 @@ def run_weekly_ranking_jikan():
     print("🎬 GERANDO RANKING: TOP 50 EPISÓDIOS DA SEMANA (100% JIKAN API)")
     print("="*80)
     
-    # Escolher modo de velocidade
-    print("\n⚡ MODO DE VELOCIDADE:")
-    print("1. 🚀 SUPER RÁPIDO (30-60seg) - Apenas animes em exibição")
-    print("2. 🐌 COMPLETO (5-10min) - Todas as temporadas")
-    
-    while True:
-        speed_choice = input("\nEscolha o modo (1-2): ").strip()
-        if speed_choice in ['1', '2']:
-            break
-        print("❌ Escolha 1 ou 2!")
-    
     try:
         # Obter período
         start_date, end_date = get_period_input()
         
         print(f"\n🎯 Buscando episódios de {start_date} até {end_date}...")
         
-        if speed_choice == '1':
-            # MODO RÁPIDO
-            print("🚀 Executando em MODO SUPER RÁPIDO...")
-            episodes = get_top_episodes_fast(start_date, end_date, limit=50)
-            save_episodes_data_fast(episodes, start_date, end_date)
-        else:
-            # MODO COMPLETO
-            print("🐌 Executando em MODO COMPLETO (pode demorar)...")
-            episodes = get_top_episodes_jikan(start_date, end_date, limit=50)
-            save_episodes_data(episodes, start_date, end_date)
+        # Buscar episódios usando apenas JIKAN
+        episodes = get_top_episodes_jikan(start_date, end_date, limit=50)
         
         if not episodes:
             print("❌ Nenhum episódio encontrado no período!")
             return
+        
+        # Salvar dados
+        save_episodes_data(episodes, start_date, end_date)
         
         print(f"\n✅ Ranking de episódios gerado com sucesso!")
         print(f"📊 {len(episodes)} episódios processados")

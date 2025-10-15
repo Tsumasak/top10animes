@@ -1,2 +1,5 @@
 requests==2.31.0
-beautifulsoup4==4.12.2
+# beautifulsoup4==4.12.2  # Removido - não mais necessário
+# Dependências para sistema 100% JIKAN API:
+# - requests (para comunicação com API)
+# - json, datetime (built-in Python)
