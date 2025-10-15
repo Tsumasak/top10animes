@@ -1,0 +1,88 @@
+# ===========================
+# VERCEL IGNORE - ONLY FRONTEND NEEDED
+# ===========================
+
+# ===========================
+# PYTHON BACKEND (not needed for Vercel)
+# ===========================
+*.py
+src/
+venv/
+__pycache__/
+*.pyc
+.env
+
+# ===========================
+# BACKUP & DEVELOPMENT FILES
+# ===========================
+backup/
+backup_*/
+*_backup/
+frontend_old/
+*.bak
+*.tmp
+*.temp
+
+# ===========================
+# DATABASE & LOGS (not needed for frontend)
+# ===========================
+*.db
+*.db-journal
+*.log
+error_log.txt
+
+# ===========================
+# DOCUMENTATION & CONFIG
+# ===========================
+*.md
+README*
+config.json
+requirements.txt
+.github/
+
+# ===========================
+# DEVELOPMENT FILES
+# ===========================
+test_*
+debug_*
+*_test.*
+*_debug.*
+migration_*
+migrate_*
+revert_*
+
+# ===========================
+# DATA FILES (backend only)
+# ===========================
+anticipated_animes_data.json
+episodes_data.json
+*.json
+!frontend/package*.json
+!frontend/tsconfig.json
+!frontend/next.config.*
+
+# ===========================
+# SYSTEM FILES
+# ===========================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ===========================
+# IDE FILES
+# ===========================
+.vscode/
+.idea/
+*.sublime-*
+.atom/
+
+# ===========================
+# AUTHENTICATION & SENSITIVE
+# ===========================
+authenticate*
+auth*
+*auth*

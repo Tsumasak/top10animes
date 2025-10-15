@@ -1,10 +1,137 @@
-# Python
-__pycache__/
-*.pyc
-.env
+# ===========================# Python
 
-# Next.js
-frontend/node_modules
+# PYTHON__pycache__/
+
+# ===========================*.pyc
+
+__pycache__/.env
+
+*.py[cod]
+
+*$py.class# Next.js
+
+*.sofrontend/node_modules
+
+.Pythonfrontend/.next/
+
+build/frontend/out/
+
+develop-eggs/frontend/.env.local
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.venv
+venv/
+ENV/
+env/
+
+# ===========================
+# NEXT.JS / FRONTEND
+# ===========================
+frontend/node_modules/
 frontend/.next/
 frontend/out/
-frontend/.env.local
+frontend/.env*
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# ===========================
+# DATABASE & LOGS
+# ===========================
+*.db
+*.db-journal
+*.log
+error_log.txt
+debug.log
+*.log.*
+
+# ===========================
+# BACKUP & TEMPORARY FILES
+# ===========================
+backup/
+backup_*/
+*_backup/
+frontend_old/
+*.bak
+*.tmp
+*.temp
+temp/
+tmp/
+
+# ===========================  
+# DEVELOPMENT & TESTING
+# ===========================
+test_*.py
+debug_*.py
+*_test.py
+*_debug.py
+migration_*.py
+migrate_*.py
+revert_*.py
+
+# ===========================
+# DATA FILES (keeping essentials)
+# ===========================
+# Keep main data files but ignore temporary ones
+*_temp.json
+*_backup.json
+*_old.json
+
+# ===========================
+# SYSTEM FILES
+# ===========================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# ===========================
+# IDE & EDITORS
+# ===========================
+.vscode/
+.idea/
+*.sublime-*
+.atom/
+
+# ===========================
+# DOCUMENTATION DRAFTS
+# ===========================
+*_MIGRATION.md
+JIKAN_MIGRATION.md
+README_JIKAN.md
+
+# ===========================
+# SPECIFIC PROJECT FILES
+# ===========================
+authenticate.py
+authenticate_jikan.py
+main_jikan_only.py
+update_top_episodes_fast.py
+mal_api.py
+scraper_utils.py
+config.json
