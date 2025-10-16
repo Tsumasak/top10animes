@@ -1,4 +1,15 @@
 [
+ {
+    "anime_id": 60098,
+    "title": "EP 2 \u2022 The End of An Era, And The Beginning",
+    "episode_number": 2,
+    "rating": 4.71,
+    "anime_title": "My Hero Academia Final Season",
+    "anime_image_url": "https://cdn.myanimelist.net/images/anime/1959/151055l.jpg",
+    "episode_url": "https://myanimelist.net/anime/60098/My_Hero_Academia_Final_Season/episode?offset=0",
+    "anime_type": "TV",
+    "is_manual": 1
+  },
   {
     "anime_id": 61930,
     "title": "EP 2 \u2022 Our Story",
@@ -55,6 +66,17 @@
     "is_manual": 1
   },
   {
+    "anime_id": 60564,
+    "title": "EP 2 \u2022 Attack of the Wild Mousse",
+    "episode_number": 2,
+    "rating": 4.49,
+    "anime_title": "Ranma \u00bd (2024) Season 2",
+    "anime_image_url": "https://cdn.myanimelist.net/images/anime/1011/152084l.jpg",
+    "episode_url": "https://myanimelist.net/anime/60564/Ranma_\u00bd_(2024)_Season_2/episode?offset=0",
+    "anime_type": "TV",
+    "is_manual": 1
+  },
+  {
     "anime_id": 59644,
     "title": "EP 3 \u2022 Aries Has Attacked!",
     "episode_number": 3,
@@ -75,6 +97,17 @@
     "episode_url": "https://myanimelist.net/anime/61072/Touring_After_the_Apocalypse/episode?offset=0",
     "anime_type": "TV",
     "is_manual": 0
+  },
+  {
+    "anime_id": 54757,
+    "title": "EP 1 \u2022 Cram School Teachers Sure Love Telling You to Aim for a 70, Not a 100",
+    "episode_number": 1,
+    "rating": 4.41,
+    "anime_title": "Gintama - Mr. Ginpachi's Zany Class",
+    "anime_image_url": "https://cdn.myanimelist.net/images/anime/1643/151547l.jpg",
+    "episode_url": "https://myanimelist.net/anime/54757/Gintama_-_Mr._Ginpachi's_Zany_Class/episode?offset=0",
+    "anime_type": "TV",
+    "is_manual": 1
   },
   {
     "anime_id": 59846,
@@ -187,6 +220,17 @@
     "is_manual": 0
   },
   {
+    "anime_id": 60619,
+    "title": "EP 2 \u2022 At This Rate, I`d Rather Be Somewhere Else",
+    "episode_number": 2,
+    "rating": 4.27,
+    "anime_title": "Let This Grieving Soul Retire Cour 2",
+    "anime_image_url": "https://cdn.myanimelist.net/images/anime/1651/152063l.jpg",
+    "episode_url": "https://myanimelist.net/anime/60619/Let_This_Grieving_Soul_Retire_Cour_2/episode?offset=0",
+    "anime_type": "TV",
+    "is_manual": 1
+  },
+  {
     "anime_id": 60427,
     "title": "EP 1 \u2022 Starting Point",
     "episode_number": 1,
@@ -253,6 +297,28 @@
     "is_manual": 0
   },
   {
+    "anime_id": 47158,
+    "title": "EP 2 \u2022 The Cousin I Haven`t Seen in Years Is Cold to Me",
+    "episode_number": 2,
+    "rating": 4.0,
+    "anime_title": "My Friend's Little Sister Has It In for Me!",
+    "anime_image_url": "https://cdn.myanimelist.net/images/anime/1699/151694l.jpg",
+    "episode_url": "https://myanimelist.net/anime/47158/My_Friend's_Little_Sister_Has_It_In_for_Me!/episode?offset=0",
+    "anime_type": "TV",
+    "is_manual": 1
+  },
+  {
+    "anime_id": 57025,
+    "title": "EP 2 \u2022 I Will Process the Earth Dragon",
+    "episode_number": 2,
+    "rating": 4.0,
+    "anime_title": "Campfire Cooking in Another World with My Absurd Skill Season 2",
+    "anime_image_url": "https://cdn.myanimelist.net/images/anime/1206/151772l.jpg",
+    "episode_url": "https://myanimelist.net/anime/57025/Campfire_Cooking_in_Another_World_with_My_Absurd_Skill_Season_2/episode?offset=0",
+    "anime_type": "TV",
+    "is_manual": 1
+  },
+  {
     "anime_id": 58146,
     "title": "EP 1 \u2022 Magical Ability Is More Important Than Study Ability",
     "episode_number": 1,
@@ -273,6 +339,17 @@
     "episode_url": "https://myanimelist.net/anime/59517/Chitose_Is_in_the_Ramune_Bottle/episode?offset=0",
     "anime_type": "TV",
     "is_manual": 0
+  },
+  {
+    "anime_id": 56854,
+    "title": "EP 3 \u2022 Guild Competition",
+    "episode_number": 3,
+    "rating": 3.84,
+    "anime_title": "Hero Without a Class: Who Even Needs Skills?!",
+    "anime_image_url": "https://cdn.myanimelist.net/images/anime/1721/151097l.jpg",
+    "episode_url": "https://myanimelist.net/anime/56854/Hero_Without_a_Class:_Who_Even_Needs_Skills?!/episode?offset=0",
+    "anime_type": "TV",
+    "is_manual": 1
   },
   {
     "anime_id": 61773,
@@ -306,5 +383,16 @@
     "episode_url": "https://myanimelist.net/anime/52807/One-Punch_Man_Season_3/episode?offset=0",
     "anime_type": "TV",
     "is_manual": 0
+  },
+  {
+    "anime_id": 60303,
+    "title": "EP 2 \u2022 The Abyss",
+    "episode_number": 2,
+    "rating": 3.17,
+    "anime_title": "My Gift Lvl 9999 Unlimited Gacha: Backstabbed in a Backwater Dungeon, I'm Out for Revenge!",
+    "anime_image_url": "https://cdn.myanimelist.net/images/anime/1163/151246l.jpg",
+    "episode_url": "https://myanimelist.net/anime/60303/My_Gift_Lvl_9999_Unlimited_Gacha:_Backstabbed_in_a_Backwater_Dungeon,_I'm_Out_for_Revenge!/episode?offset=0",
+    "anime_type": "TV",
+    "is_manual": 1
   }
 ]
