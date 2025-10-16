@@ -176,7 +176,7 @@ const BaseAnimeCard: React.FC<BaseAnimeCardProps> = ({
           </div>
         </div>
         {/* Bottom text container */}
-        <div className="text-right px-4 pb-4 text-lg font-bold mt-auto" style={{color: 'var(--nav-hover)'}}>
+        <div className="text-right px-4 pb-4 text-lg font-bold mt-auto" style={{color: 'var(--rating-yellow)'}}>
           {bottomText}
         </div>
       </div>

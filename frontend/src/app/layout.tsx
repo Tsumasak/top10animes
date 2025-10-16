@@ -25,12 +25,14 @@ export default function RootLayout({
               (function() {
                 try {
                   var theme = localStorage.getItem('theme');
-                  if (theme && theme !== 'system') {
+                  if (theme && ['light', 'dark'].includes(theme)) {
                     document.documentElement.setAttribute('data-theme', theme);
-                  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                  } else {
                     document.documentElement.setAttribute('data-theme', 'dark');
                   }
-                } catch (e) {}
+                } catch (e) {
+                  document.documentElement.setAttribute('data-theme', 'dark');
+                }
               })();
             `,
           }}

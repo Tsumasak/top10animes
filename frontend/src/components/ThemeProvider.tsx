@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark' | 'system';
+type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
   theme: Theme;
@@ -25,48 +25,34 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>('system');
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<Theme>('dark');
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('dark');
 
   useEffect(() => {
-    // Load theme from localStorage
+    // Load theme from localStorage, default to dark if no preference
     const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
+    if (savedTheme && ['light', 'dark'].includes(savedTheme)) {
       setTheme(savedTheme);
+    } else {
+      setTheme('dark'); // Default to dark theme
     }
   }, []);
 
   useEffect(() => {
     const handleThemeChange = () => {
-      let newResolvedTheme: 'light' | 'dark';
-
-      if (theme === 'system') {
-        newResolvedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      } else {
-        newResolvedTheme = theme;
-      }
-
+      // Direct theme application - no system detection
+      const newResolvedTheme = theme;
       setResolvedTheme(newResolvedTheme);
       
       // Apply theme to document
       const root = document.documentElement;
-      if (theme === 'system') {
-        root.removeAttribute('data-theme');
-      } else {
-        root.setAttribute('data-theme', newResolvedTheme);
-      }
+      root.setAttribute('data-theme', newResolvedTheme);
       
       // Save theme preference
       localStorage.setItem('theme', theme);
     };
 
     handleThemeChange();
-
-    // Listen for system theme changes
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    mediaQuery.addEventListener('change', handleThemeChange);
-
-    return () => mediaQuery.removeEventListener('change', handleThemeChange);
   }, [theme]);
 
   return (
@@ -82,47 +68,29 @@ export const ThemeToggle: React.FC = () => {
   const toggleTheme = () => {
     if (theme === 'light') {
       setTheme('dark');
-    } else if (theme === 'dark') {
-      setTheme('system');
     } else {
       setTheme('light');
     }
   };
 
-  const getThemeIcon = () => {
-    switch (theme) {
-      case 'light':
-        return '☀️';
-      case 'dark':
-        return '🌙';
-      case 'system':
-        return '🔄';
-      default:
-        return '🔄';
-    }
+  // Show the icon for the NEXT theme (what will happen on click)
+  const getNextThemeIcon = () => {
+    return theme === 'dark' ? '☀️' : '🌙';
   };
 
-  const getThemeLabel = () => {
-    switch (theme) {
-      case 'light':
-        return 'Light';
-      case 'dark':
-        return 'Dark';
-      case 'system':
-        return 'Auto';
-      default:
-        return 'Auto';
-    }
+  const getTooltip = () => {
+    return theme === 'dark' 
+      ? 'Switch to light theme' 
+      : 'Switch to dark theme';
   };
 
   return (
     <button
       onClick={toggleTheme}
-      className="theme-toggle flex items-center gap-2 text-sm"
-      title={`Current theme: ${getThemeLabel()}. Click to switch.`}
+      className="theme-toggle flex items-center justify-center w-10 h-10 text-lg"
+      title={getTooltip()}
     >
-      <span>{getThemeIcon()}</span>
-      <span>{getThemeLabel()}</span>
+      {getNextThemeIcon()}
     </button>
   );
 };
