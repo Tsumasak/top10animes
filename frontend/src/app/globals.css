@@ -307,6 +307,15 @@ button:focus {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
+/* Image hover animation - ensure smooth pan effect */
+.group img {
+  transition: object-position 1.5s ease-out !important;
+}
+
+.group:hover img {
+  object-position: center top !important;
+}
+
 /* Override any default browser styles that might interfere */
 html {
   color-scheme: light dark;
