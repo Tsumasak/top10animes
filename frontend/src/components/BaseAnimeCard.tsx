@@ -114,7 +114,7 @@ const BaseAnimeCard: React.FC<BaseAnimeCardProps> = ({
   };
 
   return (
-    <a href={linkUrl} target="_blank" rel="noopener noreferrer" className={`block bg-gray-800 rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105 flex flex-col group ${borderStyle}`}>
+    <a href={linkUrl} target="_blank" rel="noopener noreferrer" className={`block theme-card rounded-lg overflow-hidden flex flex-col group border ${borderStyle}`}>
       <div className="relative flex-shrink-0 overflow-hidden">
         <Image src={imageUrl} alt={title} width={500} height={300} className="w-full h-48 object-cover object-center transition-all duration-1500 ease-out group-hover:object-top" />
         
@@ -154,9 +154,9 @@ const BaseAnimeCard: React.FC<BaseAnimeCardProps> = ({
           )}
           
           <div className="relative flex flex-col ml-4 flex-grow">
-            <h3 className="text-lg font-bold text-white line-clamp-2 leading-[1.1] mb-3">{title}</h3>
+            <h3 className="text-lg font-bold line-clamp-2 leading-[1.1] mb-3" style={{color: 'var(--foreground)'}}>{title}</h3>
             {subtitle && (
-              <p className="text-white text-sm leading-[1.1] mb-2">{subtitle}</p>
+              <p className="text-sm leading-[1.1] mb-2" style={{color: 'var(--foreground)'}}>{subtitle}</p>
             )}
             
             {/* Genres + Themes Tags - Combine and show first 3 total */}
@@ -165,7 +165,8 @@ const BaseAnimeCard: React.FC<BaseAnimeCardProps> = ({
                 {[...genres, ...themes].slice(0, 3).map((tag, index) => (
                   <span 
                     key={index} 
-                    className="px-3 py-1 bg-gray-600 text-white text-xs rounded-full border border-gray-500"
+                    className="px-3 py-1 theme-rating text-xs rounded-full border"
+                    style={{borderColor: 'var(--card-border)'}}
                   >
                     {tag}
                   </span>
@@ -175,7 +176,7 @@ const BaseAnimeCard: React.FC<BaseAnimeCardProps> = ({
           </div>
         </div>
         {/* Bottom text container */}
-        <div className="text-right px-4 pb-4 text-yellow-400 text-lg font-bold mt-auto">
+        <div className="text-right px-4 pb-4 text-lg font-bold mt-auto" style={{color: 'var(--nav-hover)'}}>
           {bottomText}
         </div>
       </div>

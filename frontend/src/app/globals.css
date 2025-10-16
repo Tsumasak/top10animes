@@ -1,26 +1,170 @@
 @import "tailwindcss";
 
 :root {
+  /* Light Theme Colors */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0f0f0f;
+  --card-background: #f8f9fa;
+  --card-border: #e2e8f0;
+  --card-hover: #f1f5f9;
+  --header-background: #ffffff;
+  --header-border: #e2e8f0;
+  --nav-hover: #3b82f6;
+  --rating-background: #f1f5f9;
+  --rating-text: #475569;
+  --rank-background: #3b82f6;
+  --rank-text: #ffffff;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-hover: rgba(0, 0, 0, 0.15);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+[data-theme="dark"] {
+  /* Dark Theme Colors */
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card-background: #1e293b;
+  --card-border: #334155;
+  --card-hover: #293548;
+  --header-background: #1e293b;
+  --header-border: #334155;
+  --nav-hover: #60a5fa;
+  --rating-background: #334155;
+  --rating-text: #cbd5e1;
+  --rank-background: #3b82f6;
+  --rank-text: #ffffff;
+  --shadow: rgba(0, 0, 0, 0.3);
+  --shadow-hover: rgba(0, 0, 0, 0.4);
 }
 
+/* Auto-detect system preference if no manual preference is set */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme]) {
+    --background: #0f172a;
+    --foreground: #f1f5f9;
+    --card-background: #1e293b;
+    --card-border: #334155;
+    --card-hover: #293548;
+    --header-background: #1e293b;
+    --header-border: #334155;
+    --nav-hover: #60a5fa;
+    --rating-background: #334155;
+    --rating-text: #cbd5e1;
+    --rank-background: #3b82f6;
+    --rank-text: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --shadow-hover: rgba(0, 0, 0, 0.4);
   }
 }
+
+/* Tailwind CSS theme configuration removed - using CSS variables instead */
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom theme classes for components */
+.theme-card {
+  background: var(--card-background);
+  border-color: var(--card-border);
+  box-shadow: 0 4px 6px -1px var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.theme-card:hover {
+  background: var(--card-hover);
+  box-shadow: 0 10px 15px -3px var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.theme-header {
+  background: var(--header-background);
+  border-color: var(--header-border);
+  box-shadow: 0 1px 3px 0 var(--shadow);
+}
+
+.theme-nav-link {
+  transition: color 0.3s ease;
+}
+
+.theme-nav-link:hover {
+  color: var(--nav-hover);
+}
+
+.theme-rating {
+  background: var(--rating-background);
+  color: var(--rating-text);
+}
+
+.theme-rank {
+  background: var(--rank-background);
+  color: var(--rank-text);
+}
+
+.theme-toggle {
+  background: var(--card-background);
+  border: 1px solid var(--card-border);
+  color: var(--foreground);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--card-hover);
+}
+
+.theme-card-hover:hover {
+  background: var(--card-hover);
+}
+
+/* Improve readability for form elements */
+button, input, select, textarea {
+  color: var(--foreground);
+}
+
+/* Ensure text contrast in all scenarios */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--foreground);
+}
+
+p, span, div {
+  color: inherit;
+}
+
+/* Accessibility improvements */
+.theme-nav-link:focus,
+.theme-toggle:focus,
+button:focus {
+  outline: 2px solid var(--nav-hover);
+  outline-offset: 2px;
+}
+
+/* Mobile theme toggle adjustments */
+@media (max-width: 640px) {
+  .theme-toggle {
+    padding: 6px 10px;
+    font-size: 0.875rem;
+  }
+}
+
+/* Smooth transitions for theme changes */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Override any default browser styles that might interfere */
+html {
+  color-scheme: light dark;
+}
+
+[data-theme="dark"] html {
+  color-scheme: dark;
+}
+
+[data-theme="light"] html {
+  color-scheme: light;
 }

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider, ThemeToggle } from "@/components/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,23 +18,46 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gray-900 text-white`}>
-        <header className="bg-gray-800 shadow-md">
-          <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-            <Link href="/" className="text-xl font-bold">
-              Anime Ranks
-            </Link>
-            <div className="space-x-4">
-              <Link href="/" className="hover:text-yellow-400">
-                Top Episodes
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('theme');
+                  if (theme && theme !== 'system') {
+                    document.documentElement.setAttribute('data-theme', theme);
+                  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className={inter.className}>
+        <ThemeProvider>
+          <header className="theme-header border-b">
+            <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
+              <Link href="/" className="text-xl font-bold">
+                Anime Ranks
               </Link>
-              <Link href="/anticipated" className="hover:text-yellow-400">
-                Most Anticipated
-              </Link>
-            </div>
-          </nav>
-        </header>
-        <main>{children}</main>
+              <div className="flex items-center gap-6">
+                <div className="space-x-4">
+                  <Link href="/" className="theme-nav-link">
+                    Top Episodes
+                  </Link>
+                  <Link href="/anticipated" className="theme-nav-link">
+                    Most Anticipated
+                  </Link>
+                </div>
+                <ThemeToggle />
+              </div>
+            </nav>
+          </header>
+          <main>{children}</main>
+        </ThemeProvider>
       </body>
     </html>
   );

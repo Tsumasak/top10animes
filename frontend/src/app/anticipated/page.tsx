@@ -159,8 +159,8 @@ export default function AnticipatedPage() {
   const availableTabs = expectedTabOrderForDisplay.filter(season => groupedAnimes[season] && groupedAnimes[season].length > 0);
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-center mb-8 text-white">Most Anticipated Anime</h1>
+    <main className="container mx-auto px-4 py-8 min-h-screen" style={{background: 'var(--background)'}}>
+      <h1 className="text-4xl font-bold text-center mb-8" style={{color: 'var(--foreground)'}}>Most Anticipated Anime</h1>
       
       {/* Tabs */}
       <div className="flex justify-center mb-8 space-x-4 flex-wrap">
@@ -168,8 +168,10 @@ export default function AnticipatedPage() {
           <button
             key={season}
             onClick={() => setActiveTab(season)}
-            className={`px-4 py-2 rounded-lg font-semibold ${
-              activeTab === season ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+            className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+              activeTab === season 
+                ? 'theme-rank' 
+                : 'theme-card hover:theme-card-hover'
             }`}
           >
             {season}

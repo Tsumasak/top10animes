@@ -26,8 +26,8 @@ export default async function Home() {
   const filteredEpisodes = episodes.filter(episode => episode.rating > 0);
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-center mb-8 text-white">Top Anime Episodes</h1>
+    <main className="container mx-auto px-4 py-8 min-h-screen" style={{background: 'var(--background)'}}>
+      <h1 className="text-4xl font-bold text-center mb-8" style={{color: 'var(--foreground)'}}>Top Anime Episodes</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredEpisodes.map((episode, index) => (
           <EpisodeCard key={index} episode={episode} rank={index + 1} />
