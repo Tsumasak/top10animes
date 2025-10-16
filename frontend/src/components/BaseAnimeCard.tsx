@@ -29,7 +29,7 @@ const BaseAnimeCard: React.FC<BaseAnimeCardProps> = ({
   // Determine border styling and gradients based on rank
   let borderStyle = 'border border-gray-600'; // Default border for positions 4+
   let contentGradient = ''; // Gradient for top 3 positions
-  let rankStyle = 'bg-gray-600'; // Default style for positions 4+
+  let rankStyle = 'rank-4plus'; // Default style for positions 4+
   
   if (rank === 1) {
     contentGradient = 'bg-gradient-to-br from-yellow-500/30 via-yellow-500/15 to-transparent';
@@ -95,21 +95,21 @@ const BaseAnimeCard: React.FC<BaseAnimeCardProps> = ({
   );
 
   // Determine anime type tag styling
-  let typeTagStyle = 'bg-gray-700';
+  let typeTagStyle = 'tag-default';
   if (animeType === 'TV') {
-    typeTagStyle = 'bg-blue-600';
+    typeTagStyle = 'tag-tv';
   } else if (animeType === 'ONA') {
-    typeTagStyle = 'bg-green-600';
+    typeTagStyle = 'tag-ona';
   }
 
   // Determine demographics tag styling
   const getDemographicsTagStyle = (demographic: string) => {
     switch (demographic.toLowerCase()) {
-      case 'seinen': return 'bg-purple-600';
-      case 'shounen': return 'bg-blue-700';
-      case 'shoujo': return 'bg-pink-600';
-      case 'josei': return 'bg-green-700';
-      default: return 'bg-gray-600';
+      case 'seinen': return 'tag-seinen';
+      case 'shounen': return 'tag-shounen';
+      case 'shoujo': return 'tag-shoujo';
+      case 'josei': return 'tag-josei';
+      default: return 'tag-demo-default';
     }
   };
 
@@ -122,14 +122,14 @@ const BaseAnimeCard: React.FC<BaseAnimeCardProps> = ({
         <div className="absolute top-2 right-2 flex flex-col gap-1">
           {/* Anime Type Tag */}
           {animeType && (
-            <div className={`px-3 py-1 rounded-full text-xs font-semibold text-white ${typeTagStyle}`}>
+            <div className={`px-3 py-1 rounded-full text-xs font-semibold ${typeTagStyle}`}>
               {animeType}
             </div>
           )}
           
           {/* Demographics Tag - only show first demographic if available */}
           {demographics && demographics.length > 0 && (
-            <div className={`px-3 py-1 rounded-full text-xs font-semibold text-white ${getDemographicsTagStyle(demographics[0])}`}>
+            <div className={`px-3 py-1 rounded-full text-xs font-semibold ${getDemographicsTagStyle(demographics[0])}`}>
               {demographics[0]}
             </div>
           )}

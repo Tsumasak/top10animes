@@ -13,6 +13,15 @@ type AnticipatedAnime = {
   mal_url: string;
 };
 
+interface UpdateMetadata {
+  last_updated: string;
+  episodes_period: {
+    start_date: string;
+    end_date: string;
+  };
+  anticipated_update_date: string;
+}
+
 async function getAnticipatedAnimesClient(): Promise<AnticipatedAnime[]> {
   const response = await fetch('/anticipated_animes_data.json');
   if (!response.ok) {
@@ -20,6 +29,24 @@ async function getAnticipatedAnimesClient(): Promise<AnticipatedAnime[]> {
     return [];
   }
   return response.json();
+}
+
+async function getUpdateMetadataClient(): Promise<UpdateMetadata> {
+  try {
+    const response = await fetch('/update_metadata.json');
+    if (!response.ok) throw new Error('No metadata file');
+    return response.json();
+  } catch (error) {
+    // Fallback to default values if metadata file doesn't exist
+    return {
+      last_updated: new Date().toISOString(),
+      episodes_period: {
+        start_date: "2025-10-06",
+        end_date: "2025-10-12"
+      },
+      anticipated_update_date: "2025-10-16"
+    };
+  }
 }
 
 // Helper to get current season and year
@@ -79,13 +106,30 @@ function sortSeasonsChronologically(seasonKeys: string[]): string[] {
   });
 }
 
+// Helper function to format update date from metadata
+function getAnticipatedPeriod(metadata: UpdateMetadata): string {
+  // Parse date string manually to avoid timezone issues
+  const [year, month, day] = metadata.anticipated_update_date.split('-').map(Number);
+  const date = new Date(year, month - 1, day); // month is 0-indexed in JS
+  const formattedDate = date.toLocaleDateString('en-US', { 
+    month: 'short', 
+    day: 'numeric', 
+    year: 'numeric' 
+  });
+  
+  return `Updated - ${formattedDate}`;
+}
+
 export default function AnticipatedPage() {
   const [anticipatedAnimes, setAnticipatedAnimes] = useState<AnticipatedAnime[]>([]);
+  const [metadata, setMetadata] = useState<UpdateMetadata | null>(null);
   const [activeTab, setActiveTab] = useState<string>(''); // Initialize with empty string
 
   useEffect(() => {
-    getAnticipatedAnimesClient().then(data => {
+    // Load both animes and metadata
+    Promise.all([getAnticipatedAnimesClient(), getUpdateMetadataClient()]).then(([data, meta]) => {
       setAnticipatedAnimes(data);
+      setMetadata(meta);
       
       const { season: currentSeason, year: currentYear } = getCurrentSeasonAndYear();
       const nextTwoSeasons = getNextSeasons(currentSeason, currentYear, 2);
@@ -157,33 +201,48 @@ export default function AnticipatedPage() {
 
   // Filter available tabs based on expected order and actual data
   const availableTabs = expectedTabOrderForDisplay.filter(season => groupedAnimes[season] && groupedAnimes[season].length > 0);
+  
+  // Get the first place anime image for background from active tab
+  const activeTabAnimes = groupedAnimes[activeTab] || [];
+  const firstPlaceImage = activeTabAnimes.length > 0 ? activeTabAnimes[0].image_url : null;
 
   return (
-    <main className="container mx-auto px-4 py-8 min-h-screen" style={{background: 'var(--background)'}}>
-      <h1 className="text-4xl font-bold text-center mb-8" style={{color: 'var(--foreground)'}}>Most Anticipated Anime</h1>
-      
-      {/* Tabs */}
-      <div className="flex justify-center mb-8 space-x-4 flex-wrap">
-        {availableTabs.map(season => (
-          <button
-            key={season}
-            onClick={() => setActiveTab(season)}
-            className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
-              activeTab === season 
-                ? 'theme-rank' 
-                : 'theme-card hover:theme-card-hover'
-            }`}
-          >
-            {season}
-          </button>
-        ))}
-      </div>
+    <main 
+      className={`container mx-auto px-4 pt-8 pb-8 min-h-screen ${firstPlaceImage ? 'dynamic-background' : ''}`}
+      style={{
+        background: firstPlaceImage ? 'transparent' : 'var(--background)',
+        ...(firstPlaceImage && { '--bg-image': `url("${firstPlaceImage}")` } as React.CSSProperties)
+      }}
+    >
+      <div className="dynamic-background-content">
+        <h1 className="text-4xl font-bold text-center mb-2" style={{color: 'var(--foreground)'}}>Most Anticipated Anime</h1>
+        <p className="text-center mb-8 text-sm period-subtitle">
+          {metadata ? getAnticipatedPeriod(metadata) : 'Loading...'}
+        </p>
+        
+        {/* Tabs */}
+        <div className="flex justify-center mb-8 space-x-4 flex-wrap">
+          {availableTabs.map(season => (
+            <button
+              key={season}
+              onClick={() => setActiveTab(season)}
+              className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+                activeTab === season 
+                  ? 'theme-rank' 
+                  : 'theme-card hover:theme-card-hover'
+              }`}
+            >
+              {season}
+            </button>
+          ))}
+        </div>
 
-      {/* Anime Cards for active tab */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {groupedAnimes[activeTab]?.slice(0, 25).map((anime, index) => (
-          <AnticipatedAnimeCard key={anime.id} anime={anime} rank={index + 1} />
-        ))}
+        {/* Anime Cards for active tab */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {groupedAnimes[activeTab]?.slice(0, 25).map((anime, index) => (
+            <AnticipatedAnimeCard key={anime.id} anime={anime} rank={index + 1} />
+          ))}
+        </div>
       </div>
     </main>
   );

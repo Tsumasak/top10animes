@@ -3,6 +3,7 @@
 :root {
   /* Light Theme Colors */
   --background: #ffffff;
+  --background-rgb: 255, 255, 255;
   --foreground: #0f0f0f;
   --card-background: #f8f9fa;
   --card-border: #e2e8f0;
@@ -15,6 +16,16 @@
   --rating-yellow: #3b82f6;
   --rank-background: #3b82f6;
   --rank-text: #ffffff;
+  --tag-tv-background: #1d4ed8;
+  --tag-ona-background: #059669;
+  --tag-default-background: #4b5563;
+  --rank-4plus-background: #6b7280;
+  --tag-seinen-background: #7c3aed;
+  --tag-shounen-background: #1d4ed8;
+  --tag-shoujo-background: #ec4899;
+  --tag-josei-background: #059669;
+  --tag-demo-default-background: #6b7280;
+  --bg-opacity: 0.4;
   --shadow: rgba(0, 0, 0, 0.1);
   --shadow-hover: rgba(0, 0, 0, 0.15);
 }
@@ -22,6 +33,7 @@
 [data-theme="dark"] {
   /* Dark Theme Colors */
   --background: #0f172a;
+  --background-rgb: 15, 23, 42;
   --foreground: #f1f5f9;
   --card-background: #1e293b;
   --card-border: #334155;
@@ -34,6 +46,16 @@
   --rating-yellow: #fbbf24;
   --rank-background: #3b82f6;
   --rank-text: #ffffff;
+  --tag-tv-background: #2563eb;
+  --tag-ona-background: #059669;
+  --tag-default-background: #374151;
+  --rank-4plus-background: #4b5563;
+  --tag-seinen-background: #7c3aed;
+  --tag-shounen-background: #1d4ed8;
+  --tag-shoujo-background: #ec4899;
+  --tag-josei-background: #059669;
+  --tag-demo-default-background: #4b5563;
+  --bg-opacity: 0.2;
   --shadow: rgba(0, 0, 0, 0.3);
   --shadow-hover: rgba(0, 0, 0, 0.4);
 }
@@ -41,6 +63,7 @@
 /* Default to dark theme if no data-theme attribute is set */
 :root:not([data-theme]) {
   --background: #0f172a;
+  --background-rgb: 15, 23, 42;
   --foreground: #f1f5f9;
   --card-background: #1e293b;
   --card-border: #334155;
@@ -53,6 +76,16 @@
   --rating-yellow: #fbbf24;
   --rank-background: #3b82f6;
   --rank-text: #ffffff;
+  --tag-tv-background: #2563eb;
+  --tag-ona-background: #059669;
+  --tag-default-background: #374151;
+  --rank-4plus-background: #4b5563;
+  --tag-seinen-background: #7c3aed;
+  --tag-shounen-background: #1d4ed8;
+  --tag-shoujo-background: #ec4899;
+  --tag-josei-background: #059669;
+  --tag-demo-default-background: #4b5563;
+  --bg-opacity: 0.2;
   --shadow: rgba(0, 0, 0, 0.3);
   --shadow-hover: rgba(0, 0, 0, 0.4);
 }
@@ -104,16 +137,71 @@ body {
   color: var(--rank-text);
 }
 
+/* Tag styling using CSS variables */
+.tag-tv {
+  background: var(--tag-tv-background);
+  color: #ffffff;
+}
+
+.tag-ona {
+  background: var(--tag-ona-background);
+  color: #ffffff;
+}
+
+.tag-default {
+  background: var(--tag-default-background);
+  color: #ffffff;
+}
+
+.rank-4plus {
+  background: var(--rank-4plus-background);
+  color: #ffffff;
+}
+
+/* Demographics tag styling */
+.tag-seinen {
+  background: var(--tag-seinen-background);
+  color: #ffffff;
+}
+
+.tag-shounen {
+  background: var(--tag-shounen-background);
+  color: #ffffff;
+}
+
+.tag-shoujo {
+  background: var(--tag-shoujo-background);
+  color: #ffffff;
+}
+
+.tag-josei {
+  background: var(--tag-josei-background);
+  color: #ffffff;
+}
+
+.tag-demo-default {
+  background: var(--tag-demo-default-background);
+  color: #ffffff;
+}
+
 .theme-toggle {
   background: transparent;
   border: none;
+  outline: none;
   color: var(--foreground);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .theme-toggle:hover {
   opacity: 0.7;
+}
+
+.theme-toggle:focus,
+.theme-toggle:active {
+  outline: none;
+  border: none;
+  box-shadow: none;
 }
 
 .theme-card-hover:hover {
@@ -282,7 +370,6 @@ p, span, div {
 
 /* Accessibility improvements */
 .theme-nav-link:focus,
-.theme-toggle:focus,
 button:focus {
   outline: 2px solid var(--nav-hover);
   outline-offset: 2px;
@@ -314,6 +401,57 @@ button:focus {
 
 .group:hover img {
   object-position: center top !important;
+}
+
+/* Dynamic background styles */
+.dynamic-background {
+  position: relative;
+  min-height: 100vh;
+}
+
+.dynamic-background::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: var(--bg-opacity);
+  filter: blur(5px);
+  z-index: -2;
+  transition: background-image 0.5s ease-in-out;
+}
+
+.dynamic-background::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    var(--background) 0%,
+    rgba(var(--background-rgb), 0.75) 15%,
+    rgba(var(--background-rgb), 0.75) 85%,
+    var(--background) 100%
+  );
+  z-index: -1;
+}
+
+.dynamic-background-content {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+/* Subtitle styling for period information */
+.period-subtitle {
+  color: var(--rating-yellow);
 }
 
 /* Override any default browser styles that might interfere */

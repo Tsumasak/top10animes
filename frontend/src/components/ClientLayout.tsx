@@ -17,7 +17,7 @@ export const ClientLayout: React.FC<ClientLayoutProps> = ({ children }) => {
 
   return (
     <>
-      <header className="theme-header border-b">
+      <header className="theme-header border-b fixed top-0 left-0 right-0 z-50">
         <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link href="/" className="text-xl font-bold">
             Anime Ranks
@@ -47,7 +47,7 @@ export const ClientLayout: React.FC<ClientLayoutProps> = ({ children }) => {
         onClose={closeMobileMenu} 
       />
 
-      <main>{children}</main>
+      <main className="pt-20">{children}</main>
     </>
   );
 };
