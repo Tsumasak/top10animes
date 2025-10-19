@@ -1,7 +1,7 @@
 'use client'; // This component uses client-side features like useState
 
 import React, { useState, useEffect } from 'react';
-import AnticipatedAnimeCard from '@/components/AnticipatedAnimeCard';
+import AnticipatedAnimeCard from '../../components/AnticipatedAnimeCard';
 
 type AnticipatedAnime = {
   id: number;
@@ -13,15 +13,6 @@ type AnticipatedAnime = {
   mal_url: string;
 };
 
-interface UpdateMetadata {
-  last_updated: string;
-  episodes_period: {
-    start_date: string;
-    end_date: string;
-  };
-  anticipated_update_date: string;
-}
-
 async function getAnticipatedAnimesClient(): Promise<AnticipatedAnime[]> {
   const response = await fetch('/anticipated_animes_data.json');
   if (!response.ok) {
@@ -31,38 +22,20 @@ async function getAnticipatedAnimesClient(): Promise<AnticipatedAnime[]> {
   return response.json();
 }
 
-async function getUpdateMetadataClient(): Promise<UpdateMetadata> {
-  try {
-    const response = await fetch('/update_metadata.json');
-    if (!response.ok) throw new Error('No metadata file');
-    return response.json();
-  } catch (error) {
-    // Fallback to default values if metadata file doesn't exist
-    return {
-      last_updated: new Date().toISOString(),
-      episodes_period: {
-        start_date: "2025-10-06",
-        end_date: "2025-10-12"
-      },
-      anticipated_update_date: "2025-10-16"
-    };
-  }
-}
-
 // Helper to get current season and year
 function getCurrentSeasonAndYear(): { season: string; year: number } {
   const now = new Date();
-  const month = now.getMonth(); // 0-based: 0=Jan, 1=Feb, ..., 11=Dec
+  const month = now.getMonth();
   const year = now.getFullYear();
 
   let season = '';
-  if (month >= 2 && month <= 4) { // March (2), April (3), May (4)
+  if (month >= 2 && month <= 4) { // March, April, May
     season = 'Spring';
-  } else if (month >= 5 && month <= 7) { // June (5), July (6), August (7)
+  } else if (month >= 5 && month <= 7) { // June, July, August
     season = 'Summer';
-  } else if (month >= 8 && month <= 10) { // September (8), October (9), November (10)
+  } else if (month >= 8 && month <= 10) { // September, October, November
     season = 'Fall';
-  } else { // December (11), January (0), February (1)
+  } else { // December, January, February
     season = 'Winter';
   }
   return { season, year };
@@ -106,30 +79,27 @@ function sortSeasonsChronologically(seasonKeys: string[]): string[] {
   });
 }
 
-// Helper function to format update date from metadata
-function getAnticipatedPeriod(metadata: UpdateMetadata): string {
-  // Parse date string manually to avoid timezone issues
-  const [year, month, day] = metadata.anticipated_update_date.split('-').map(Number);
-  const date = new Date(year, month - 1, day); // month is 0-indexed in JS
-  const formattedDate = date.toLocaleDateString('en-US', { 
-    month: 'short', 
-    day: 'numeric', 
-    year: 'numeric' 
-  });
-  
-  return `Updated - ${formattedDate}`;
-}
-
 export default function AnticipatedPage() {
   const [anticipatedAnimes, setAnticipatedAnimes] = useState<AnticipatedAnime[]>([]);
-  const [metadata, setMetadata] = useState<UpdateMetadata | null>(null);
   const [activeTab, setActiveTab] = useState<string>(''); // Initialize with empty string
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Smooth transition function for season changes
+  const handleSeasonChange = (newSeason: string) => {
+    if (newSeason === activeTab) return;
+    
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setActiveTab(newSeason);
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 150);
+    }, 150); // Half of the transition duration
+  };
 
   useEffect(() => {
-    // Load both animes and metadata
-    Promise.all([getAnticipatedAnimesClient(), getUpdateMetadataClient()]).then(([data, meta]) => {
+    getAnticipatedAnimesClient().then(data => {
       setAnticipatedAnimes(data);
-      setMetadata(meta);
       
       const { season: currentSeason, year: currentYear } = getCurrentSeasonAndYear();
       const nextTwoSeasons = getNextSeasons(currentSeason, currentYear, 2);
@@ -199,12 +169,15 @@ export default function AnticipatedPage() {
     return acc;
   }, {} as Record<string, AnticipatedAnime[]>);
 
+  // Sort each group by members count (descending)
+  Object.keys(groupedAnimes).forEach(season => {
+    groupedAnimes[season].sort((a, b) => b.members - a.members);
+  });
+
   // Filter available tabs based on expected order and actual data
   const availableTabs = expectedTabOrderForDisplay.filter(season => groupedAnimes[season] && groupedAnimes[season].length > 0);
-  
-  // Get the first place anime image for background from active tab
-  const activeTabAnimes = groupedAnimes[activeTab] || [];
-  const firstPlaceImage = activeTabAnimes.length > 0 ? activeTabAnimes[0].image_url : null;
+
+  const firstPlaceImage = groupedAnimes[activeTab] && groupedAnimes[activeTab].length > 0 ? groupedAnimes[activeTab][0].image_url : null;
 
   return (
     <main 
@@ -215,31 +188,33 @@ export default function AnticipatedPage() {
       }}
     >
       <div className="dynamic-background-content">
-        <h1 className="text-4xl font-bold text-center mb-2" style={{color: 'var(--foreground)'}}>Most Anticipated Anime</h1>
-        <p className="text-center mb-8 text-sm period-subtitle">
-          {metadata ? getAnticipatedPeriod(metadata) : 'Loading...'}
+        <h1 className="text-4xl font-bold text-center mb-2" style={{color: 'var(--foreground)'}}>
+          Most Anticipated Anime
+        </h1>
+        <p className="text-center mb-8 text-sm period-subtitle period-transition">
+          Discover the most anticipated anime by season
         </p>
         
         {/* Tabs */}
-        <div className="flex justify-center mb-8 space-x-4 flex-wrap">
-          {availableTabs.map(season => (
-            <button
-              key={season}
-              onClick={() => setActiveTab(season)}
-              className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
-                activeTab === season 
-                  ? 'theme-rank' 
-                  : 'theme-card hover:theme-card-hover'
-              }`}
-            >
-              {season}
-            </button>
-          ))}
+        <div className="flex justify-center mb-8">
+          <div className="flex space-x-2 theme-card rounded-lg p-1">
+            {availableTabs.map(season => (
+              <button
+                key={season}
+                onClick={() => handleSeasonChange(season)}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  activeTab === season ? 'theme-rank' : 'theme-nav-link'
+                }`}
+              >
+                {season}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Anime Cards for active tab */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {groupedAnimes[activeTab]?.slice(0, 25).map((anime, index) => (
+        <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 content-grid ${isTransitioning ? 'loading' : ''}`}>
+          {groupedAnimes[activeTab]?.map((anime, index) => (
             <AnticipatedAnimeCard key={anime.id} anime={anime} rank={index + 1} />
           ))}
         </div>

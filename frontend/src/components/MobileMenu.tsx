@@ -42,7 +42,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
         onClick={onClose}
         aria-label="Close menu"
       />
-      
+
       {/* Menu Panel */}
       <div 
         className="mobile-menu-panel"

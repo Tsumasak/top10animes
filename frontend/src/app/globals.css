@@ -1,6 +1,20 @@
 @import "tailwindcss";
 
 :root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@import "tailwindcss";
+
+:root {
   /* Light Theme Colors */
   --background: #ffffff;
   --background-rgb: 255, 255, 255;
@@ -465,4 +479,222 @@ html {
 
 [data-theme="light"] html {
   color-scheme: light;
+}
+
+/* Smooth transitions for tab changes */
+.content-transition {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.content-transition-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.content-transition-exit {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.content-grid {
+  transition: opacity 0.4s ease-in-out;
+}
+
+.content-grid.loading {
+  opacity: 0.6;
+}
+
+.period-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Mobile Menu Styles */
+.hamburger-icon {
+  width: 20px;
+  height: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.hamburger-line {
+  width: 100%;
+  height: 2px;
+  background-color: var(--foreground);
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.hamburger-line.open:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-line.open:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-line.open:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 998;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.mobile-menu-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 280px;
+  background: var(--card-background);
+  border-left: 1px solid var(--card-border);
+  z-index: 999;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  overflow-y: auto;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-menu.open {
+  transform: translateX(0);
+}
+
+.mobile-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--foreground);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  background: var(--card-hover);
+}
+
+.mobile-menu-nav {
+  padding: 1rem 0;
+  flex: 1;
+}
+
+.mobile-menu-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--card-border);
+  padding: 1rem 0;
+}
+
+.mobile-menu-link {
+  display: block;
+  padding: 1rem 1.5rem;
+  color: var(--foreground);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.mobile-menu-link:hover {
+  background: var(--card-hover);
+  border-left-color: var(--nav-hover);
+}
+
+.mobile-menu-button {
+  display: block;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: none;
+  border: none;
+  color: var(--foreground);
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.mobile-menu-button:hover {
+  background: var(--card-hover);
+  border-left-color: var(--nav-hover);
+}
+
+.mobile-menu-button.theme-toggle {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 1.5rem;
+  padding-right: 2rem;
+}
+
+.mobile-menu-divider {
+  height: 1px;
+  background: var(--card-border);
+  margin: 0.5rem 1.5rem;
+}
+
+/* Responsive - Hide mobile menu on larger screens */
+@media (min-width: 768px) {
+  .mobile-menu,
+  .mobile-menu-overlay {
+    display: none;
+  }
+}
+
+/* Hover border effects for cards by rank */
+.rank-hover-1:hover {
+  border-color: #fbbf24 !important; /* yellow-400 */
+}
+
+.rank-hover-2:hover {
+  border-color: #d1d5db !important; /* gray-300 */
+}
+
+.rank-hover-3:hover {
+  border-color: #fb923c !important; /* orange-400 */
+}
+
+.rank-hover-4plus:hover {
+  border-color: #60a5fa !important; /* blue-400 */
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }

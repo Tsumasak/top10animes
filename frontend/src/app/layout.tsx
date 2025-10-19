@@ -1,9 +1,7 @@
-import Link from 'next/link';
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Navigation from "../components/Navigation";
 import "./globals.css";
-import { ThemeProvider, ThemeToggle } from "@/components/ThemeProvider";
-import { ClientLayout } from "@/components/ClientLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,11 +38,10 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <ThemeProvider>
-          <ClientLayout>
-            {children}
-          </ClientLayout>
-        </ThemeProvider>
+        <Navigation />
+        <main>
+          {children}
+        </main>
       </body>
     </html>
   );

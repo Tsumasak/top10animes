@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import EpisodeCard from '@/components/EpisodeCard';
+import EpisodeCard from '../components/EpisodeCard';
+import WeeksController from '../components/WeeksController';
 
 type Episode = {
   anime_id: number;
@@ -48,10 +49,12 @@ async function getUpdateMetadata(): Promise<UpdateMetadata> {
 
 // Helper function to format aired period from metadata
 function getAiredPeriod(metadata: UpdateMetadata): string {
+
   const formatDate = (dateStr: string) => {
     // Parse date string manually to avoid timezone issues
     const [year, month, day] = dateStr.split('-').map(Number);
     const date = new Date(year, month - 1, day); // month is 0-indexed in JS
+    
     return date.toLocaleDateString('en-US', { 
       month: 'short', 
       day: 'numeric', 
@@ -66,36 +69,6 @@ function getAiredPeriod(metadata: UpdateMetadata): string {
 }
 
 export default async function Home() {
-  const episodes = await getEpisodes();
-  const metadata = await getUpdateMetadata();
-  
-  // Filter out episodes with rating 0 (not yet released episodes)
-  const filteredEpisodes = episodes.filter(episode => episode.rating > 0);
-  
-  // Get the first place anime image for background
-  const firstPlaceImage = filteredEpisodes.length > 0 ? filteredEpisodes[0].anime_image_url : null;
-  
-  // Get aired period for subtitle
-  const airedPeriod = getAiredPeriod(metadata);
-
-  return (
-    <main 
-      className={`container mx-auto px-4 pt-8 pb-8 min-h-screen ${firstPlaceImage ? 'dynamic-background' : ''}`}
-      style={{
-        background: firstPlaceImage ? 'transparent' : 'var(--background)',
-        ...(firstPlaceImage && { '--bg-image': `url("${firstPlaceImage}")` } as React.CSSProperties)
-      }}
-    >
-      <div className="dynamic-background-content">
-        <h1 className="text-4xl font-bold text-center mb-2" style={{color: 'var(--foreground)'}}>Top Anime Episodes</h1>
-        <p className="text-center mb-8 text-sm period-subtitle">{airedPeriod}</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredEpisodes.map((episode, index) => (
-            <EpisodeCard key={index} episode={episode} rank={index + 1} />
-          ))}
-        </div>
-      </div>
-    </main>
-  );
+  return <WeeksController />;
 }
 
