@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import EpisodeCard from './EpisodeCard';
+import BlankState from './BlankState';
+import { WEEKS_DATA, CURRENT_WEEK_NUMBER, getCurrentWeek, WeekData } from '../config/weeks';
 
 interface Episode {
   anime_id: number;
@@ -13,38 +15,6 @@ interface Episode {
   episode_url: string;
   anime_type: string;
 }
-
-interface WeekData {
-  id: string;
-  title: string;
-  period: string;
-  label: string;
-  dataFile: string;
-}
-
-const WEEKS_DATA: WeekData[] = [
-  {
-    id: 'week1',
-    title: 'Week 1 - Sep 29 - Oct 5, 2025',
-    period: 'Aired - Sep 29, 2025 to Oct 5, 2025',
-    label: 'Week 1',
-    dataFile: 'week1_episodes_data.json'
-  },
-  {
-    id: 'week2', 
-    title: 'Week 2 - Oct 6-12, 2025',
-    period: 'Aired - Oct 6, 2025 to Oct 12, 2025',
-    label: 'Week 2',
-    dataFile: 'week2_episodes_data.json'
-  },
-  {
-    id: 'week3',
-    title: 'Week 3 - Oct 13-19, 2025', 
-    period: 'Airing - Oct 13, 2025 to Oct 19, 2025',
-    label: 'Week 3',
-    dataFile: 'week3_episodes_data.json'
-  }
-];
 
 // Function to get the formatted period with correct "Aired" or "Airing" prefix
 const getFormattedPeriod = (week: WeekData, isCurrentWeek: boolean): string => {
@@ -82,34 +52,44 @@ const calculatePositionChange = (
   return previousRank - currentRank;
 };
 
-// Trend indicators system (kept for backward compatibility with old trend system)
+// Trend indicators system - dynamic week detection
 const getTrendIndicator = (rank: number, weekId: string) => {
-  if (weekId === 'week3') {
-    // Week 3 (Current week) - Hot trends
+  const currentWeekId = `week${CURRENT_WEEK_NUMBER}`;
+  const weekNum = parseInt(weekId.replace('week', ''));
+  
+  if (weekId === currentWeekId) {
+    // Current week - Hot trends
     if (rank <= 3) return { symbol: '🔥', color: '#ef4444' }; // Red for hot
     if (rank <= 6) return { symbol: '⬆️', color: '#22c55e' }; // Green for rising
     if (rank <= 10) return { symbol: '=', color: '#6b7280' }; // Gray for stable
     return { symbol: '⬇️', color: '#f97316' }; // Orange for falling
   }
   
-  if (weekId === 'week2') {
-    // Week 2 - Trending indicators
+  if (weekNum === CURRENT_WEEK_NUMBER - 1) {
+    // Previous week - Trending indicators
     if (rank <= 5) return { symbol: '🆕', color: '#3b82f6' }; // Blue for new
     if (rank <= 10) return { symbol: '⬆️', color: '#22c55e' }; // Green for rising
     return { symbol: '=', color: '#6b7280' }; // Gray for stable
   }
   
-  if (weekId === 'week1') {
-    // Week 1 - Historical data (oldest)
+  if (weekNum <= CURRENT_WEEK_NUMBER - 2) {
+    // Older weeks - Historical data
     if (rank <= 5) return { symbol: '⬆️', color: '#22c55e' }; // Green for good performance
     return { symbol: '=', color: '#6b7280' }; // Gray for average
+  }
+  
+  // Future weeks
+  if (weekNum > CURRENT_WEEK_NUMBER) {
+    return { symbol: '⏳', color: '#9333ea' }; // Purple for upcoming
   }
   
   return { symbol: '=', color: '#6b7280' }; // Default
 };
 
-export default function WeeksController() {
-  const [activeWeek, setActiveWeek] = useState('week3'); // Start with current week
+const WeeksController = () => {
+  // Track if user has manually switched tabs
+  const userSwitchedTab = useRef(false);
+  const [activeWeek, setActiveWeek] = useState<string>(`week${CURRENT_WEEK_NUMBER}`);
   const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [previousWeekEpisodes, setPreviousWeekEpisodes] = useState<Episode[]>([]);
   const [loading, setLoading] = useState(true);
@@ -120,7 +100,7 @@ export default function WeeksController() {
   // Smooth transition function for week changes
   const handleWeekChange = (newWeek: string) => {
     if (newWeek === activeWeek) return;
-    
+    userSwitchedTab.current = true;
     setIsTransitioning(true);
     setTimeout(() => {
       setActiveWeek(newWeek);
@@ -128,6 +108,26 @@ export default function WeeksController() {
   };
   
   // Load episodes when activeWeek changes
+  // Helper to get the last week with episodes (before or including current)
+  const getLastWeekWithEpisodes = async (): Promise<string> => {
+    for (let i = CURRENT_WEEK_NUMBER; i >= 1; i--) {
+      const week = WEEKS_DATA.find(w => w.id === `week${i}`);
+      if (week) {
+        try {
+          const response = await fetch(`/${week.dataFile}`);
+          if (response.ok) {
+            const data = await response.json();
+            if (Array.isArray(data) && data.filter((ep: any) => ep.rating > 0).length > 0) {
+              return week.id;
+            }
+          }
+        } catch {}
+      }
+    }
+    return `week${CURRENT_WEEK_NUMBER}`;
+  };
+
+  // Main effect: load episodes and auto-switch tab if needed
   useEffect(() => {
     const loadWeekEpisodes = async () => {
       setLoading(true);
@@ -136,67 +136,71 @@ export default function WeeksController() {
         if (currentWeekData) {
           // Load current week data
           const response = await fetch(`/${currentWeekData.dataFile}`);
+          let filteredData: Episode[] = [];
           if (response.ok) {
             const data = await response.json();
-            const filteredData = data.filter((episode: Episode) => episode.rating > 0);
+            filteredData = data.filter((episode: Episode) => episode.rating > 0);
             setEpisodes(filteredData);
           } else {
             // Fallback to default episodes_data.json if week-specific file doesn't exist
             const fallbackResponse = await fetch('/episodes_data.json');
             const fallbackData = await fallbackResponse.json();
-            const filteredFallbackData = fallbackData.filter((episode: Episode) => episode.rating > 0);
-            setEpisodes(filteredFallbackData);
+            filteredData = fallbackData.filter((episode: Episode) => episode.rating > 0);
+            setEpisodes(filteredData);
+          }
+
+          // --- Auto-switch logic ---
+          // Only auto-switch if user hasn't manually switched tabs
+          if (!userSwitchedTab.current) {
+            const isCurrentWeek = currentWeekData.isCurrentWeek;
+            if (isCurrentWeek && filteredData.length === 0) {
+              // Find last week with episodes
+              const lastWithEpisodes = await getLastWeekWithEpisodes();
+              if (lastWithEpisodes !== activeWeek) {
+                setActiveWeek(lastWithEpisodes);
+                return; // Wait for next effect
+              }
+            }
+            if (isCurrentWeek && filteredData.length > 0 && activeWeek !== `week${CURRENT_WEEK_NUMBER}`) {
+              setActiveWeek(`week${CURRENT_WEEK_NUMBER}`);
+              return;
+            }
           }
 
           // Load previous week data for comparison
           const currentWeekIndex = WEEKS_DATA.findIndex(week => week.id === activeWeek);
-          console.log(`Current week: ${activeWeek}, index: ${currentWeekIndex}`);
-          
           if (currentWeekIndex > 0) {
             const previousWeekData = WEEKS_DATA[currentWeekIndex - 1];
-            console.log(`Loading previous week data: ${previousWeekData.dataFile}`);
             try {
               const prevResponse = await fetch(`/${previousWeekData.dataFile}`);
               if (prevResponse.ok) {
                 const prevData = await prevResponse.json();
                 const filteredPrevData = prevData.filter((episode: Episode) => episode.rating > 0);
-                console.log(`Previous week episodes loaded: ${filteredPrevData.length} episodes`);
-                console.log('First few previous episodes:', filteredPrevData.slice(0, 3));
                 setPreviousWeekEpisodes(filteredPrevData);
               } else {
-                console.log('Failed to load previous week data');
                 setPreviousWeekEpisodes([]);
               }
             } catch (error) {
-              console.error('Error loading previous week data:', error);
               setPreviousWeekEpisodes([]);
             }
           } else {
-            // No previous week (this is week 1)
-            console.log('No previous week (Week 1)');
             setPreviousWeekEpisodes([]);
           }
         }
       } catch (error) {
-        console.error('Error loading episodes for week:', activeWeek, error);
-        // Fallback to default episodes_data.json
         try {
           const fallbackResponse = await fetch('/episodes_data.json');
           const fallbackData = await fallbackResponse.json();
           const filteredFallbackData = fallbackData.filter((episode: Episode) => episode.rating > 0);
           setEpisodes(filteredFallbackData);
-        } catch (fallbackError) {
-          console.error('Error loading fallback episodes:', fallbackError);
-        }
+        } catch (fallbackError) {}
       } finally {
         setLoading(false);
-        // Reset transition state after loading completes
         setTimeout(() => {
           setIsTransitioning(false);
         }, 150);
       }
     };
-
     loadWeekEpisodes();
   }, [activeWeek]);
 
@@ -223,7 +227,7 @@ export default function WeeksController() {
           Top Anime Episodes
         </h1>
         <p className="text-center mb-8 text-sm period-subtitle period-transition">
-          {currentWeek ? getFormattedPeriod(currentWeek, activeWeek === 'week3') : 'Loading period...'}
+          {currentWeek ? getFormattedPeriod(currentWeek, currentWeek.isCurrentWeek) : 'Loading period...'}
         </p>
         
         {/* Week tabs */}
@@ -245,21 +249,31 @@ export default function WeeksController() {
           </div>
         </div>
 
-        <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 content-grid ${isTransitioning ? 'loading' : ''}`}>
-          {episodes.map((episode, index) => {
-            const rank = index + 1;
-            const positionChange = calculatePositionChange(episode, rank, previousWeekEpisodes);
-            return (
-              <EpisodeCard 
-                key={`${activeWeek}-${index}`} 
-                episode={episode} 
-                rank={rank}
-                positionChange={positionChange}
-              />
-            );
-          })}
-        </div>
+        {episodes.length === 0 ? (
+          <BlankState 
+            weekNumber={currentWeek ? parseInt(currentWeek.id.replace('week', '')) : 1}
+            weekPeriod={currentWeek ? currentWeek.title.replace(/^Week \d+ - /, '') : 'Loading...'}
+            isCurrentWeek={currentWeek ? currentWeek.isCurrentWeek : false}
+          />
+        ) : (
+          <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 content-grid ${isTransitioning ? 'loading' : ''}`}>
+            {episodes.map((episode, index) => {
+              const rank = index + 1;
+              const positionChange = calculatePositionChange(episode, rank, previousWeekEpisodes);
+              return (
+                <EpisodeCard 
+                  key={`${activeWeek}-${index}`} 
+                  episode={episode} 
+                  rank={rank}
+                  positionChange={positionChange}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
     </main>
   );
-}
+};
+
+export default WeeksController;
